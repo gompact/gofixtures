@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"os"
 	"strings"
 	"time"
 
@@ -26,12 +25,16 @@ type DBConfig struct {
 var queries []string
 
 func main() {
-	filename := os.Args[1]
 	dbConfig := readCommandLineFlags()
 	// connect to database
 	db := connectDatabase(dbConfig)
 	defer db.Close()
 	// read yaml file
+	filenames := flag.Args()
+	if len(filenames) == 0 {
+		panic("Please provide a yaml file to load")
+	}
+	filename := filenames[0]
 	input, err := ioutil.ReadFile(filename)
 	if err != nil {
 		log.Fatal(err)
@@ -60,30 +63,46 @@ func main() {
 }
 
 func readCommandLineFlags() *DBConfig {
+	var database string
+	var user string
+	var password string
+	var host string
+	var port int
+	flag.StringVar(&database, "database", "postgres", "database name")
+	flag.StringVar(&user, "user", "postgres", "database user name")
+	flag.StringVar(&password, "password", "", "databases password")
+	flag.StringVar(&host, "host", "localhost", "database host")
+	flag.IntVar(&port, "port", 5432, "database port")
+	flag.Parse()
+
 	return &DBConfig{
-		Database: *flag.String("database", "postgres", "database name"),
-		User:     *flag.String("user", "postgres", "database user name"),
-		Password: *flag.String("password", "", "databases password"),
-		Host:     *flag.String("host", "localhost", "database host"),
-		Port:     *flag.Int("port", 5432, "database port"),
+		Database: database,
+		User:     user,
+		Password: password,
+		Host:     host,
+		Port:     port,
 	}
 }
 
 func connectDatabase(dbConfig *DBConfig) *sql.DB {
-	connString := fmt.Sprintf(
-		"user=%s dbname=%s host=%s port=%d password=%s sslmode=disable",
-		dbConfig.User,
-		dbConfig.Database,
-		dbConfig.Host,
-		dbConfig.Port,
-		dbConfig.Password,
-	)
+	params := []string{}
+	params = append(params, fmt.Sprintf("dbname=%s", dbConfig.Database))
+	params = append(params, fmt.Sprintf("user=%s", dbConfig.User))
+	if dbConfig.Password != "" {
+		params = append(params, fmt.Sprintf("password=%s", dbConfig.Password))
+	}
+	params = append(params, fmt.Sprintf("host=%s", dbConfig.Host))
+	params = append(params, fmt.Sprintf("port=%d", dbConfig.Port))
+	params = append(params, fmt.Sprintf("sslmode=disable"))
+	connString := strings.Join(params, " ")
 	db, err := sql.Open("postgres", connString)
 	if err != nil {
+		log.Print(err)
 		log.Fatal("Error: The data source arguments are not valid")
 	}
 	err = db.Ping()
 	if err != nil {
+		log.Print(err)
 		log.Fatal("Error: Couldn't stablish connection with the database")
 	}
 	return db

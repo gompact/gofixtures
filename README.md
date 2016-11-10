@@ -37,7 +37,7 @@ go get github.com/eslammostafa/gofixtures
 5. in order to use gofixutres, change directory to where the yaml file exists, run command
 
 ```
-gofixtures exmaple.yaml database=your_db_name user=db_user_name
+gofixtures -database=your_db_name -user=db_user_name example.yaml
 ```
 
 6. gofixtures depend on keyword arguments for the database connection, available arguemnts
@@ -45,7 +45,7 @@ gofixtures exmaple.yaml database=your_db_name user=db_user_name
 ```
 database: defaults to "postgres"
 user: defaults to "postgres"
-password: defaults to ""
+password 
 port: defaults to 5432
 host: defaults to localhost
 ```
