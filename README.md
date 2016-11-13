@@ -8,7 +8,7 @@ and insert it's records to postgresql database.
 this will install gofixtures  to your $GOPATH/bin
 
 ```
-go get github.com/eslammostafa/gofixtures
+go get github.com/objectizer/gofixtures
 ```
 
 #### Usage
