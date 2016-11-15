@@ -16,7 +16,7 @@ go get github.com/objectizer/gofixtures
 1. Prepare YAML file, let's call it example.yaml
 2. Start writing records, each record must start with "table_name" field, as following
 
-```
+```yaml
 - table_name: countries
   name: Egypt
 - table_name: countries
@@ -36,8 +36,8 @@ go get github.com/objectizer/gofixtures
 4. gofixtures will parse each record and insert it to postgresql
 5. in order to use gofixutres, change directory to where the yaml file exists, run command
 
-```
-gofixtures -database=your_db_name -user=db_user_name example.yaml
+```bash
+$ gofixtures -database=your_db_name -user=db_user_name example.yaml
 ```
 
 6. gofixtures depend on keyword arguments for the database connection, available arguemnts
@@ -58,7 +58,7 @@ host: defaults to localhost
 
 only the following field types are supported so far
 
-```
+```go
 string
 int
 Time
