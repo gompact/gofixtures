@@ -10,6 +10,7 @@ This will install gofixtures to your $GOPATH/bin
 
 ```bash
 $ go get github.com/objectizer/gofixtures
+$ go install github.com/objectizer/gofixtures
 ```
 
 #### Usage
