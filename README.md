@@ -9,8 +9,8 @@ and insert it's records to a database.
 This will install gofixtures to your $GOPATH/bin
 
 ```bash
-$ go get github.com/objectizer/gofixtures
-$ go install github.com/objectizer/gofixtures
+$ go get github.com/emostafa/gofixtures
+$ go install github.com/emostafa/gofixtures
 ```
 
 #### Usage
@@ -39,12 +39,12 @@ $ go install github.com/objectizer/gofixtures
 5. in order to use gofixutres, change directory to where the yaml file exists, run command
 
 ```bash
-$ gofixtures -file example.yaml -dbconf "user=eslam dbname=mydb sslmode=disable"
+$ gofixtures -file example.yaml -dbconf "user=postgres dbname=postgres sslmode=disable"
 ```
 
 6. gofixtures expects the database configuration file in "db/dbconf.yml", but you can override this by either:
 	a. supply db conf file (yaml file) in the command line `$ gofixtures -dbconffile mydbconf.yml`
-	b. supply connection string in the command line `$ gofixtures -driver postgres -dbconf "user=eslam dbname=mydb sslmode=disable"
+	b. supply connection string in the command line `$ gofixtures -driver postgres -dbconf "user=postgres dbname=postgres sslmode=disable"
 
 
 7. gofixtures expecte yaml files to exists in "fixtures/" directory, but you can override this by either:
@@ -54,7 +54,7 @@ $ gofixtures -file example.yaml -dbconf "user=eslam dbname=mydb sslmode=disable"
 A combination of all the available flags can be used, e.g:
 
 ```bash
-$ gofixtures -dbconffile mydbconf.yaml -directory /home/eslam/fixtures 
+$ gofixtures -dbconffile mydbconf.yaml -directory ~/fixtures 
 ```
 
 ##### Avialable Command Line Flags
@@ -70,7 +70,7 @@ $ gofixtures -dbconffile mydbconf.yaml -directory /home/eslam/fixtures
 In order to load database configuration from a YAML file, gofixtures expects the files to contain two records, driver and open, e.g:
 ```yaml
 driver: postgres
-open: "user=eslam dbname=mydb sslmode=disable"
+open: "user=postgres dbname=postgres sslmode=disable"
 ```
 
 
