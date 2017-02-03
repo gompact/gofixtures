@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/objectizer/gofixtures/database"
-	"github.com/objectizer/gofixtures/utils"
+	"github.com/emostafa/gofixtures/database"
+	"github.com/emostafa/gofixtures/utils"
 )
 
 var queries []string
@@ -30,24 +30,24 @@ func main() {
 			panic(err)
 		}
 		switch items := data.(type) {
-			case map[interface{}]interface{}:
-				for _, item := range items {
-					q, err := utils.BuildQuery(item.(map[interface{}]interface{}))
-					if err != nil {
-						panic(err)
-					}
-					queries = append(queries, q)
+		case map[interface{}]interface{}:
+			for _, item := range items {
+				q, err := utils.BuildQuery(item.(map[interface{}]interface{}))
+				if err != nil {
+					panic(err)
 				}
-			case []interface{}:
-				for _, item := range items {
-					q, err := utils.BuildQuery(item.(map[interface{}]interface{}))
-					if err != nil {
-						panic(err)
-					}
-					queries = append(queries, q)
+				queries = append(queries, q)
+			}
+		case []interface{}:
+			for _, item := range items {
+				q, err := utils.BuildQuery(item.(map[interface{}]interface{}))
+				if err != nil {
+					panic(err)
 				}
-			default:
-				panic("cannot parse file")
+				queries = append(queries, q)
+			}
+		default:
+			panic("cannot parse file")
 		}
 		fmt.Printf("Loading %s...\n", f)
 	}
