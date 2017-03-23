@@ -3,8 +3,6 @@ package database
 import (
 	"database/sql"
 
-	"log"
-
 	_ "github.com/lib/pq"
 )
 
@@ -18,16 +16,14 @@ type DBConfig struct {
 }
 
 //ConnectDatabase connects to postgresql db based on parameters of DBConfig object
-func ConnectDatabase(conf string) *sql.DB {
+func ConnectDatabase(conf string) (*sql.DB, error) {
 	db, err := sql.Open("postgres", conf)
 	if err != nil {
-		log.Print(err)
-		log.Fatal("Error: The data source arguments are not valid")
+		return nil, err
 	}
 	err = db.Ping()
 	if err != nil {
-		log.Print(err)
-		log.Fatal("Error: Couldn't stablish connection with the database")
+		return nil, err
 	}
-	return db
+	return db, nil
 }

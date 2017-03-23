@@ -3,9 +3,9 @@ package utils
 import (
 	"errors"
 	"flag"
+	"fmt"
 	"io/ioutil"
 	"log"
-	"fmt"
 )
 
 type CLI struct {
@@ -70,7 +70,7 @@ func (c CLI) DatabaseConf() (string, error) {
 // Check if a directory is passed, Else, Expect to find a dir named "fixtures" to load
 // files form.
 // Returns a list of string of filenames
-func (c *CLI) FilesToParse() []string {
+func (c *CLI) FilesToParse() ([]string, error) {
 	files := []string{}
 	if c.Filename != "" {
 		filename := fmt.Sprintf("%s/%s", c.Directory, c.Filename)
@@ -78,7 +78,7 @@ func (c *CLI) FilesToParse() []string {
 	} else if c.Directory != "" {
 		fileinfos, err := ioutil.ReadDir(c.Directory)
 		if err != nil {
-			panic(err)
+			return files, err
 		}
 		for _, f := range fileinfos {
 			filename := fmt.Sprintf("%s/%s", c.Directory, f.Name())
@@ -87,7 +87,7 @@ func (c *CLI) FilesToParse() []string {
 	} else {
 		fileinfos, err := ioutil.ReadDir("./fixtures")
 		if err != nil {
-			panic(err)
+			return files, err
 		}
 		c.Directory = "fixtures"
 		for _, f := range fileinfos {
@@ -95,5 +95,5 @@ func (c *CLI) FilesToParse() []string {
 			files = append(files, filename)
 		}
 	}
-	return files
+	return files, nil
 }
