@@ -1,4 +1,4 @@
-package database
+package gofixtures
 
 import (
 	"database/sql"

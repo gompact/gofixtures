@@ -1,4 +1,4 @@
-package utils
+package gofixtures
 
 import (
 	"io/ioutil"

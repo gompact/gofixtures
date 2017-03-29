@@ -17,7 +17,7 @@ type CLI struct {
 }
 
 var defaultDirectory = "./fixtures"
-var defaultDBConfigFile = "./db/dbconf.yml"
+var defaultDBConfigFile = "./db/dbconf.yaml"
 
 // ReadCommandLineFlags reads the options supplied in the comamnd line
 func (c *CLI) ReadCommandLineFlags() {

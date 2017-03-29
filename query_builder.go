@@ -1,6 +1,7 @@
-package utils
+package gofixtures
 
 import (
+	"database/sql"
 	"fmt"
 	"strings"
 	"time"
@@ -39,4 +40,18 @@ func BuildQuery(record map[interface{}]interface{}) (string, error) {
 	)
 
 	return q, nil
+}
+
+func CommitQueries(queries []string, db *sql.DB) error {
+	for _, q := range queries {
+		stmt, err := db.Prepare(q)
+		if err != nil {
+			return err
+		}
+		_, err = stmt.Exec()
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
