@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	gf "github.com/emostafa/gofixtures"
 )
 
 var queries []string
@@ -17,7 +16,7 @@ func main() {
 	}
 
 	// connect to database
-	db, err := gf.ConnectDatabase(dbConf)
+	db, err := ConnectDatabase(dbConf)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -31,7 +30,7 @@ func main() {
 	}
 	queries := []string{}
 	for _, f := range files {
-		data, err := gf.ParseYAML(f)
+		data, err := ParseYAML(f)
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -39,7 +38,7 @@ func main() {
 		switch items := data.(type) {
 		case map[interface{}]interface{}:
 			for _, item := range items {
-				q, err := gf.BuildQuery(item.(map[interface{}]interface{}))
+				q, err := BuildQuery(item.(map[interface{}]interface{}))
 				if err != nil {
 					fmt.Println(err)
 					return
@@ -48,7 +47,7 @@ func main() {
 			}
 		case []interface{}:
 			for _, item := range items {
-				q, err := gf.BuildQuery(item.(map[interface{}]interface{}))
+				q, err := BuildQuery(item.(map[interface{}]interface{}))
 				if err != nil {
 					fmt.Println(err)
 					return
@@ -62,7 +61,7 @@ func main() {
 		fmt.Printf("Loading %s...\n", f)
 	}
 
-	err = gf.CommitQueries(queries, db)
+	err = CommitQueries(queries, db)
 	if err != nil {
 		fmt.Println(err)
 		return

@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-
-	gf "github.com/emostafa/gofixtures"
 )
 
 type CLI struct {
@@ -40,7 +38,7 @@ func (c CLI) DatabaseConf() (string, error) {
 	if c.DBConf != "" {
 		return c.DBConf, nil
 	} else if c.DBConfFile != "" {
-		data, err := gf.ParseDBConfFromYAML(c.DBConfFile)
+		data, err := ParseDBConfFromYAML(c.DBConfFile)
 		if err != nil {
 			return "", err
 		}
@@ -51,7 +49,7 @@ func (c CLI) DatabaseConf() (string, error) {
 		// look for ./db/dbconf.yaml
 		log.Print("Expecting to find dbconf.yaml in db/")
 		c.DBConfFile = "db/dbconf.yaml"
-		data, err := gf.ParseDBConfFromYAML(c.DBConfFile)
+		data, err := ParseDBConfFromYAML(c.DBConfFile)
 		if err != nil {
 			log.Fatal(err)
 			return "", err
