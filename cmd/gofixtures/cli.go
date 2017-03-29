@@ -1,4 +1,4 @@
-package utils
+package main
 
 import (
 	"errors"
@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+
+	gf "github.com/emostafa/gofixtures"
 )
 
 type CLI struct {
@@ -24,7 +26,7 @@ func (c *CLI) ReadCommandLineFlags() {
 	flag.StringVar(&c.Directory, "dir", "", "The path of the fixtures directory")
 	flag.StringVar(&c.Filename, "file", "", "The path of a fixture file to load")
 	flag.StringVar(&c.DBDriver, "driver", "postgres", "The database driver")
-	flag.StringVar(&c.DBConfFile, "dbconffile", "", "The path of dbconf.yml file to load database configuration")
+	flag.StringVar(&c.DBConfFile, "dbconffile", "", "The path of dbconf.yaml file to load database configuration")
 	flag.StringVar(&c.DBConf, "dbconf", "", "A string represents database configuration")
 
 	flag.Parse()
@@ -33,12 +35,12 @@ func (c *CLI) ReadCommandLineFlags() {
 // DatabaseConf generate the db configuration string. Make sure
 // to call ReadCommandLineFlags() first, Because DatabaseConf()
 // checks first if command line arguments has been passed
-// if not it looks for dbconf.yml in ./db folder.
+// if not it looks for dbconf.yaml in ./db folder.
 func (c CLI) DatabaseConf() (string, error) {
 	if c.DBConf != "" {
 		return c.DBConf, nil
 	} else if c.DBConfFile != "" {
-		data, err := ParseDBConfFromYAML(c.DBConfFile)
+		data, err := gf.ParseDBConfFromYAML(c.DBConfFile)
 		if err != nil {
 			return "", err
 		}
@@ -46,10 +48,10 @@ func (c CLI) DatabaseConf() (string, error) {
 		c.DBDriver = result["driver"].(string)
 		c.DBConf = result["open"].(string)
 	} else {
-		// look for ./db/dbconf.yml
-		log.Print("Expecting to find dbconf.yml in db/")
-		c.DBConfFile = "db/dbconf.yml"
-		data, err := ParseDBConfFromYAML(c.DBConfFile)
+		// look for ./db/dbconf.yaml
+		log.Print("Expecting to find dbconf.yaml in db/")
+		c.DBConfFile = "db/dbconf.yaml"
+		data, err := gf.ParseDBConfFromYAML(c.DBConfFile)
 		if err != nil {
 			log.Fatal(err)
 			return "", err

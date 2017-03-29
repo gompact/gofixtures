@@ -1,8 +1,6 @@
 package main
 
 import (
-	"database/sql"
-	"flag"
 	"fmt"
 	gf "github.com/emostafa/gofixtures"
 )
@@ -38,38 +36,30 @@ func main() {
 			fmt.Println(err)
 			return
 		}
-		// switch items := data.(type) {
-		// case map[interface{}]interface{}:
-		// 	for _, item := range items {
-		// 		q, err := utils.BuildQuery(item.(map[interface{}]interface{}))
-		// 		if err != nil {
-		// 			fmt.Println(err)
-		// 			return
-		// 		}
-		// 		queries = append(queries, q)
-		// 	}
-		// case []interface{}:
-		// 	for _, item := range items {
-		// 		q, err := utils.BuildQuery(item.(map[interface{}]interface{}))
-		// 		if err != nil {
-		// 			fmt.Println(err)
-		// 			return
-		// 		}
-		// 		queries = append(queries, q)
-		// 	}
-		// default:
-		// 	fmt.Println("cannot parse file")
-		// 	return
-		// }
-		fmt.Printf("Loading %s...\n", f)
-		for _, item := range items {
-			q, err := gf.BuildQuery(item.(map[interface{}]interface{}))
-			if err != nil {
-				fmt.Println(err)
-				return
+		switch items := data.(type) {
+		case map[interface{}]interface{}:
+			for _, item := range items {
+				q, err := gf.BuildQuery(item.(map[interface{}]interface{}))
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
+				queries = append(queries, q)
 			}
-			queries = append(queries, q)
+		case []interface{}:
+			for _, item := range items {
+				q, err := gf.BuildQuery(item.(map[interface{}]interface{}))
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
+				queries = append(queries, q)
+			}
+		default:
+			fmt.Println("cannot parse file")
+			return
 		}
+		fmt.Printf("Loading %s...\n", f)
 	}
 
 	err = gf.CommitQueries(queries, db)
