@@ -1,70 +1,99 @@
 package main
 
 import (
+	"errors"
 	"fmt"
+	"log"
+	"os"
+
+	"github.com/emostafa/gofixtures/dal"
+	"github.com/emostafa/gofixtures/dal/postgres"
+	"github.com/emostafa/gofixtures/feed/cli"
+	"github.com/emostafa/gofixtures/parser"
+	"github.com/emostafa/gofixtures/parser/json"
+	"github.com/emostafa/gofixtures/parser/yaml"
 )
 
 var queries []string
 
+const version = "2.0.0"
+
+func getParser(forType string) (parser.Parser, error) {
+	switch forType {
+	case ".json":
+		return json.New(), nil
+	case ".yaml":
+		return yaml.New(), nil
+	default:
+		return nil, errors.New("unsupported input type, supported types are YAML and JSON")
+	}
+}
+
 func main() {
-	cli := &CLI{}
-	cli.ReadCommandLineFlags()
-	dbConf, err := cli.DatabaseConf()
-	if err != nil {
-		fmt.Println(err)
+	cmdArgs := os.Args
+	if cmdArgs[1] == "version" {
+		log.Printf("version: %s", version)
 		return
+	}
+	// read input using CLI
+	feeder := cli.New()
+	dbConfInput, err := feeder.GetDBConf()
+	if err != nil {
+		feeder.Error(err, true)
+	}
+
+	dbConfParser, err := getParser(dbConfInput.Type)
+	if err != nil {
+		feeder.Print("failed to parse database configuration")
+		feeder.Error(err, true)
+	}
+	dbConf, err := dbConfParser.ParseDBConf(dbConfInput.Data)
+	if err != nil {
+		feeder.Error(err, true)
 	}
 
 	// connect to database
-	db, err := ConnectDatabase(dbConf)
-	if err != nil {
-		fmt.Println(err)
-		return
+	var datastore dal.Datastore
+	switch dbConf.Driver {
+	case "postgres":
+		datastore = postgres.New()
+	default:
+		feeder.Error(errors.New("unsupported database driver"), true)
 	}
-	defer db.Close()
+	feeder.Print("attempting to connect to datastore...")
+	err = datastore.Connect(dbConf)
+	if err != nil {
+		feeder.Error(err, true)
+	}
+	defer datastore.Close()
+	feeder.Print("Connection to datastore has been established")
 
-	files, err := cli.FilesToParse()
+	// get the data that needs to be parsed
+	feeder.Print("loading fixture files...")
+	input, err := feeder.GetInput()
 	if err != nil {
-		fmt.Println(err)
-		return
+		feeder.Error(err, true)
 	}
-	queries := []string{}
-	for _, f := range files {
-		data, err := ParseYAML(f)
+
+	// based on type of the data, determine which parser is going to be used
+	for _, i := range input {
+		p, err := getParser(i.Type)
 		if err != nil {
-			fmt.Println(err)
-			return
+			feeder.Error(err, true)
 		}
-		switch items := data.(type) {
-		case map[interface{}]interface{}:
-			for _, item := range items {
-				q, err := BuildQuery(item.(map[interface{}]interface{}))
-				if err != nil {
-					fmt.Println(err)
-					return
-				}
-				queries = append(queries, q)
-			}
-		case []interface{}:
-			for _, item := range items {
-				q, err := BuildQuery(item.(map[interface{}]interface{}))
-				if err != nil {
-					fmt.Println(err)
-					return
-				}
-				queries = append(queries, q)
-			}
-		default:
-			fmt.Println("cannot parse file")
-			return
+		// parse the input
+		data, err := p.Parse(i.Data)
+		if err != nil {
+			feeder.Print("Failed to parse input, proceeding to next input")
+			feeder.Error(err, false)
+			continue
 		}
-		fmt.Printf("Loading %s...\n", f)
+		err = datastore.Insert(data)
+		if err != nil {
+			feeder.Print("Failed to insert to datastore, " + err.Error())
+			continue
+		}
 	}
 
-	err = CommitQueries(queries, db)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Println("Finished Successfully...")
+	fmt.Println("Finished Parsing all the inputs...")
 }
