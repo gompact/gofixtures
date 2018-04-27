@@ -7,19 +7,19 @@ through CLI, and supports PostgreSQL only.
 
 #### Supported File Types
 
-[X] JSON
-[X] YAML
-[ ] CSV
+- [X] JSON
+- [X] YAML
+- [ ] CSV
 
 #### Supported Databases
 
-[X] PostgreSQL
-[ ] MySQL
-[ ] SQLServer 
-[ ] MongoDB
-[ ] Redis
-[ ] Cassandra
-[ ] Firebase
+- [X] PostgreSQL
+- [ ] MySQL
+- [ ] SQLServer 
+- [ ] MongoDB
+- [ ] Redis
+- [ ] Cassandra
+- [ ] Firebase
 
 #### Install
 
@@ -86,6 +86,5 @@ $ gofixtures --dbconf mydbconf.yaml --dir ./my_fixtures
 #### TODO
 1. ~~support JSON files~~
 2. support different sql databases like MySQL
-3. support more field types like Date and DateTime, float, JSON
-4. ~~load multiple yaml fiels, or load folders~~
-5. ~~ability to load configuration from file instead of kwargs~~
+3. ~~load multiple yaml fiels, or load folders~~
+4. ~~ability to load configuration from file instead of kwargs~~
