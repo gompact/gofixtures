@@ -55,7 +55,7 @@ func TestInsertion(t *testing.T) {
 	prepareDatastoreTables(datastore.(*postgresDatastore))
 	err = datastore.Insert(fixture)
 	if err != nil {
-		t.Error()
+		t.Error(err)
 		t.Fail()
 	}
 }
@@ -81,7 +81,7 @@ func BenchmarkInsertion(b *testing.B) {
 		fixture := prepareTestData(b.N)
 		err := datastore.Insert(fixture)
 		if err != nil {
-			b.Error()
+			b.Error(err)
 			b.Fail()
 		}
 	}
