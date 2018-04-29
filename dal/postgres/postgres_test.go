@@ -27,7 +27,7 @@ func prepareTestData(numberOfRecords int) entity.Fixture {
 func prepareDatastoreTables(datastore *postgresDatastore) {
 	for i := 0; i < 10; i++ {
 		datastore.db.MustExec(`
-			CREATE TABLE IF NOT EXISTS products_table  (
+			CREATE TABLE IF NOT EXISTS products (
 				name varchar(255),
 				slug varchar(255)
 			);
