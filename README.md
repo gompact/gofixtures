@@ -1,8 +1,28 @@
 # gofixtures
-version: 1.0.0
 
-A small command line tool written in Go lang, that loads yaml files
-and insert it's records to a database.
+version: 2.0.0
+
+[![Build Status](https://travis-ci.org/emostafa/gofixtures.svg?branch=2)](https://travis-ci.org/emostafa/gofixtures)
+
+A small command line tool written in Go lang, that loads fixtures
+and insert it's records to a database. Currently supports YAML and JSON files
+through CLI, and supports PostgreSQL only.
+
+#### Supported File Types
+
+- [X] JSON
+- [X] YAML
+- [ ] CSV
+
+#### Supported Databases
+
+- [X] PostgreSQL
+- [ ] MySQL
+- [ ] SQLServer 
+- [ ] MongoDB
+- [ ] Redis
+- [ ] Cassandra
+- [ ] Firebase
 
 #### Install
 
@@ -15,80 +35,59 @@ $ go install github.com/emostafa/gofixtures
 
 #### Usage
 
-1. Prepare YAML file, let's call it example.yaml
-2. Start writing records, each record must start with "table_name" field, as following
+To start using gofixtures you need to have a configuration file for the database connection, It could be written
+in YAML or JSON, here is an example for `db.yaml`
 
 ```yaml
-- table_name: countries
-  name: Egypt
-- table_name: countries
-  name: Germany
-- table_name: cities
-  name: Cairo
-  country_id: 1
-- table_name: cities
-  name: Munich
-  country_id: 2
-- table_name: cities
-  name: Alexandria
-  country_id: 1 
+driver: "postgres"
+database: "mydb"
+user: "foo"
+password: "bar"
+host: "localhost"
 ```
 
-3. the previous yaml file creates two countries, and tree cities
-4. gofixtures will parse each record and insert it to postgresql
-5. in order to use gofixutres, change directory to where the yaml file exists, run command
+The next step is to prepare your fixtures:
+
+1. Prepare YAML file (or json file), let's call it example.yaml
+2. Start writing your fixture, it should have a "table" which declares that table name
+that we are going to insert data into, and then a list of records, as following:
+
+```yaml
+table: countries
+records:
+  - name: Egypt
+  - name: Germany
+  - name: Netherlands
+```
+
+3. the previous yaml file inserts three records into table `countries`
+4. gofixtures will parse each record and insert it into the database
+5. in order to use gofixutres, change directory to one level above where the yaml file exists, run command
 
 ```bash
-$ gofixtures -file example.yaml -dbconf "user=postgres dbname=postgres sslmode=disable"
+$ gofixtures --file fixtures/example.yaml --dbconf db.yaml
 ```
 
-6. gofixtures expects the database configuration file in "db/dbconf.yml", but you can override this by either:
-	a. supply db conf file (yaml file) in the command line `$ gofixtures -dbconffile mydbconf.yml`
-	b. supply connection string in the command line `$ gofixtures -driver postgres -dbconf "user=postgres dbname=postgres sslmode=disable"
 
-
-7. gofixtures expecte yaml files to exists in "fixtures/" directory, but you can override this by either:
-	a. specify a yaml file, e.g: `$ gofixtures -file myfile.yaml`
-	b. specify a directory and loal all the yaml files inside it, e.g: `$ gofixtures -directory /home/eslam/myfixtures`
+6. by default, gofixtures expecte yaml files to exists in "fixtures/" directory, but you can override this by either:
+	a. specify a file to load, e.g: `$ gofixtures -file myfixture.json`
+	b. specify a directory and loal all the fixtures files inside it, e.g: `$ gofixtures -directory /home/foo/myfixtures`
 
 A combination of all the available flags can be used, e.g:
 
 ```bash
-$ gofixtures -dbconffile mydbconf.yaml -directory ~/fixtures 
+$ gofixtures --dbconf mydbconf.yaml --dir ./my_fixtures 
 ```
 
 ##### Avialable Command Line Flags
-1. dbconf "database connection string"
-2. dbconffile "database configuration yaml file"
-3. driver "defaults to postgres"
-4. file "a yaml file to load"
-5. directory "a directory contains fixtures"
+1. dbconf "database configuration YAML (or JSON) file"
+3. file "a yaml or json file to load"
+4. dir "a directory contains fixtures"
 
-
-##### Loading Database Configuration From YAML file
-
-In order to load database configuration from a YAML file, gofixtures expects the files to contain two records, driver and open, e.g:
-```yaml
-driver: postgres
-open: "user=postgres dbname=postgres sslmode=disable"
-```
-
-
-#### Supported Field Types
-
-only the following field types are supported so far
-
-```go
-string
-int
-Time
-```
-more field types to be added
 
 
 #### TODO
-1. support JSON files
+1. ~~support JSON files~~
 2. support different sql databases like MySQL
-3. support more field types like Date and DateTime, float, JSON
-4. ~~load multiple yaml fiels, or load folders~~
-5. ~~ability to load configuration from file instead of kwargs~~
+3. ~~load multiple yaml fiels, or load folders~~
+4. ~~ability to load configuration from file instead of kwargs~~
