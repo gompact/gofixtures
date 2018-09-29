@@ -9,10 +9,10 @@ jobs:
     - get: code
       trigger: true
     - task:  test
-      file: ./tasks/test.yml
+      file: code/ci/tasks/test.yml
       on_success:
         task: build
-        file: ./tasks/build.yml
+        file: code/ci/tasks/build.yml
 
         
         #- name: build
