@@ -10,8 +10,5 @@ image_resource:
 inputs:
     - name: code
 
-outputs:
-    - name: code 
-
 run:
-    path: code/ci/test.sh
+    path: code/ci/lint.sh

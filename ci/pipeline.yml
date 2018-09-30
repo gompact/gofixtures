@@ -4,6 +4,13 @@ resources:
     source: {uri: 'https://github.com/ishehata/gofixtures'}
 
 jobs:
+- name: lint
+  plan:
+    - get: code
+      trigger: true
+    - task:  test
+      file: code/ci/tasks/lint.yml
+
 - name: test
   plan:
     - get: code

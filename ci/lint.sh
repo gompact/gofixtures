@@ -12,4 +12,4 @@ echo $(ls)
 echo "installing dependencies"
 go get
 echo "prepairing to start go test"
-go test -v .
+go vet .
