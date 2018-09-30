@@ -9,5 +9,7 @@ cd $p
 echo "verify that code files are copied"
 echo "pwd is $(pwd)"
 echo $(ls)
+echo "installing dependencies"
+go get
 echo "prepairing to start go test"
 go build .
