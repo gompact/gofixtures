@@ -10,16 +10,14 @@ jobs:
       trigger: true
     - task:  test
       file: code/ci/tasks/test.yml
-      on_success:
-        task: build
-        file: code/ci/tasks/build.yml
 
         
-        #- name: build
-        #  plan:
-        #  - get: code
-        #    trigger: true
-        #  - task: build
-        #    file: tasks/build.yml
+- name: build
+  plan:
+  - get: code
+    passed: [test]
+    trigger: true
+  - task: build
+    file: code/ci/tasks/build.yml
     
 
