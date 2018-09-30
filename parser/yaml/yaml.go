@@ -3,8 +3,8 @@ package yaml
 import (
 	"io"
 
-	"github.com/emostafa/gofixtures/entity"
-	"github.com/emostafa/gofixtures/parser"
+	"github.com/ishehata/gofixtures/entity"
+	"github.com/ishehata/gofixtures/parser"
 	y "gopkg.in/yaml.v2"
 )
 

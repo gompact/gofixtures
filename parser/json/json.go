@@ -5,8 +5,8 @@ import (
 
 	j "encoding/json"
 
-	"github.com/emostafa/gofixtures/entity"
-	"github.com/emostafa/gofixtures/parser"
+	"github.com/ishehata/gofixtures/entity"
+	"github.com/ishehata/gofixtures/parser"
 )
 
 // New creates a new instance of JSON parser

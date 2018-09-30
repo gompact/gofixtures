@@ -3,8 +3,8 @@ package postgres
 import (
 	"fmt"
 
-	"github.com/emostafa/gofixtures/dal"
-	"github.com/emostafa/gofixtures/entity"
+	"github.com/ishehata/gofixtures/dal"
+	"github.com/ishehata/gofixtures/entity"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq" // postgresql driver
 )

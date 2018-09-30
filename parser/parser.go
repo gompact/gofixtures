@@ -3,7 +3,7 @@ package parser
 import (
 	"io"
 
-	"github.com/emostafa/gofixtures/entity"
+	"github.com/ishehata/gofixtures/entity"
 )
 
 // Parser interface defines the methods needs to be implemented by parsers

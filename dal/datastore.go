@@ -1,6 +1,6 @@
 package dal
 
-import "github.com/emostafa/gofixtures/entity"
+import "github.com/ishehata/gofixtures/entity"
 
 // Datastore interface defines the methods needed to be implemented
 // by different database drivers
