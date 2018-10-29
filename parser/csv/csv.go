@@ -10,12 +10,15 @@ import (
 )
 
 // New creates a new instance of CSV parser
-func New() *Parser {
-	return &Parser{}
+func New(config entity.CSVConfig) *Parser {
+	return &Parser{
+		config: config,
+	}
 }
 
 // Parser parses csv files and return a DBConf or Fixture data
 type Parser struct {
+	config entity.CSVConfig
 }
 
 // ParseConfig parses db configurations from a JSON input
@@ -27,6 +30,9 @@ func (parser *Parser) ParseConfig(input io.Reader) (entity.Config, error) {
 func (parser *Parser) Parse(input io.Reader) (entity.Fixture, error) {
 	fixture := entity.Fixture{}
 	r := csv.NewReader(input)
+	if parser.config.Separator != "" {
+		r.Comma = parser.config.Separator
+	}
 	records, err := r.ReadAll()
 	if err != nil {
 		return fixture, err

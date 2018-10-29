@@ -8,6 +8,7 @@ import (
 
 	"github.com/ishehata/gofixtures/v3/dal"
 	"github.com/ishehata/gofixtures/v3/dal/postgres"
+	"github.com/ishehata/gofixtures/v3/entity"
 	"github.com/ishehata/gofixtures/v3/feed/cli"
 	"github.com/ishehata/gofixtures/v3/parser"
 	"github.com/ishehata/gofixtures/v3/parser/csv"
@@ -19,14 +20,14 @@ var queries []string
 
 const version = "3.0.0"
 
-func getParser(forType string) (parser.Parser, error) {
+func getParser(forType string, config *entity.Config) (parser.Parser, error) {
 	switch forType {
 	case ".json":
 		return json.New(), nil
 	case ".yaml":
 		return yaml.New(), nil
 	case ".csv":
-		return csv.New(), nil
+		return csv.New(config.CSV), nil
 	default:
 		return nil, errors.New("unsupported input type, supported types are YAML, CSV and JSON")
 	}
@@ -45,9 +46,9 @@ func main() {
 		feeder.Error(err, true)
 	}
 
-	confParser, err := getParser(confInput.Type)
+	confParser, err := getParser(confInput.Type, nil)
 	if err != nil {
-		feeder.Error(errors.New("failed to parse database configuration"), false)
+		feeder.Error(errors.New("failed to parse configuration"), false)
 		feeder.Error(err, true)
 	}
 	conf, err := confParser.ParseConfig(confInput.Data)
@@ -84,7 +85,7 @@ func main() {
 	successfulInputs := 0
 	for _, i := range input {
 		numberOfInputs++
-		p, err := getParser(i.Type)
+		p, err := getParser(i.Type, &conf)
 		if err != nil {
 			feeder.Error(err, true)
 		}
