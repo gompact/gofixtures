@@ -1,6 +1,6 @@
 # gofixtures
 
-version: 2.1.0
+version: 2.2.0
 
 [![Build Status](https://travis-ci.org/ishehata/gofixtures.svg)](https://travis-ci.org/ishehata/gofixtures)
 
@@ -12,7 +12,7 @@ through CLI, and supports PostgreSQL only.
 
 - [X] JSON
 - [X] YAML
-- [ ] CSV
+- [X] CSV
 
 #### Supported Databases
 
@@ -79,7 +79,13 @@ A combination of all the available flags can be used, e.g:
 $ gofixtures --dbconf mydbconf.yaml --dir ./my_fixtures 
 ```
 
+
+#### Notes
+
+- For CSV files, column names are read from the first row, filename will be used as a tablename
+
 ##### Avialable Command Line Flags
+
 1. dbconf "database configuration YAML (or JSON) file"
 3. file "a yaml or json file to load"
 4. dir "a directory contains fixtures"
@@ -87,6 +93,7 @@ $ gofixtures --dbconf mydbconf.yaml --dir ./my_fixtures
 
 
 #### TODO
+
 1. ~~support JSON files~~
 2. support different sql databases like MySQL
 3. ~~load multiple yaml fiels, or load folders~~

@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"os"
 
@@ -10,6 +9,7 @@ import (
 	"github.com/ishehata/gofixtures/dal/postgres"
 	"github.com/ishehata/gofixtures/feed/cli"
 	"github.com/ishehata/gofixtures/parser"
+	"github.com/ishehata/gofixtures/parser/csv"
 	"github.com/ishehata/gofixtures/parser/json"
 	"github.com/ishehata/gofixtures/parser/yaml"
 )
@@ -24,8 +24,10 @@ func getParser(forType string) (parser.Parser, error) {
 		return json.New(), nil
 	case ".yaml":
 		return yaml.New(), nil
+	case ".csv":
+		return csv.New(), nil
 	default:
-		return nil, errors.New("unsupported input type, supported types are YAML and JSON")
+		return nil, errors.New("unsupported input type, supported types are YAML, CSV and JSON")
 	}
 }
 
@@ -82,18 +84,26 @@ func main() {
 			feeder.Error(err, true)
 		}
 		// parse the input
-		data, err := p.Parse(i.Data)
+		fixture, err := p.Parse(i.Data)
 		if err != nil {
 			feeder.Print("Failed to parse input, proceeding to next input")
 			feeder.Error(err, false)
 			continue
 		}
-		err = datastore.Insert(data)
+		// TODO: maybe find a better approach to pass the filename to all
+		// parsers and they can use/or not the filename.
+
+		// Special case for the csv, set the table name from the file name
+		if i.Type == ".csv" {
+			fixture.Table = i.Filename
+		}
+		err = datastore.Insert(fixture)
 		if err != nil {
 			feeder.Print("Failed to insert to datastore, " + err.Error())
 			continue
 		}
 	}
 
-	fmt.Println("Finished Parsing all the inputs...")
+	// fmt.Println("Finished Parsing all the inputs...")
+	feeder.Print("Finished Parsing all the inputs...")
 }

@@ -8,6 +8,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"strings"
 
 	"github.com/ishehata/gofixtures/entity"
 	"github.com/ishehata/gofixtures/feed"
@@ -70,6 +71,16 @@ func (cli *feeder) GetDBConf() (entity.DBConfigInput, error) {
 	return input, nil
 }
 
+// extractFilename returns a filename that could be used as a tablename
+// in case of csv files. it splits the paths and removes the file extension
+func extractFilename(filePath string) string {
+	splitted := strings.Split(filePath, "/")
+	filenameWithExt := splitted[len(splitted)-1]
+	fileNameSplitted := strings.Split(filenameWithExt, ".")
+	filename := fileNameSplitted[0]
+	return filename
+}
+
 // GetInput reads the files selected by the user
 // and return them as inputs
 func (cli *feeder) GetInput() ([]entity.Input, error) {
@@ -89,8 +100,9 @@ func (cli *feeder) GetInput() ([]entity.Input, error) {
 		}
 		ext := filepath.Ext(file)
 		input := entity.Input{
-			Type: ext,
-			Data: f,
+			Filename: extractFilename(file),
+			Type:     ext,
+			Data:     f,
 		}
 		inputs[i] = input
 	}

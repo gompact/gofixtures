@@ -4,8 +4,9 @@ import "io"
 
 // Input Defines the attributes of single Input coming through feeders
 type Input struct {
-	Type string    // e.g: json, yaml
-	Data io.Reader // reader that holds the fixtures
+	Type     string    // e.g: json, yaml
+	Filename string    // e.g: countries.json
+	Data     io.Reader // reader that holds the fixtures
 }
 
 // Fixture defines how the input data (Input.Data) should look like
