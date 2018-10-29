@@ -13,7 +13,9 @@ type Feeder interface {
 	// into the datastore
 	GetInput() ([]entity.Input, error)
 	// Print sends/prints something to the end user
-	Print(string)
+	Info(string)
+	Warning(string)
+	Debug(string)
 	// Error prints an error to the end user and it could posibbly
 	// end the session if its a fatal error
 	Error(error, bool)

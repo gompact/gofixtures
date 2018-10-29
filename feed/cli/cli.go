@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"path"
 	"path/filepath"
@@ -23,7 +22,7 @@ type feeder struct {
 }
 
 func init() {
-	log.SetFlags(log.Lshortfile | log.LstdFlags)
+	// log.SetFlags(log.Lshortfile | log.LstdFlags)
 }
 
 // New creates a new instace of the CLI feeder
@@ -136,16 +135,29 @@ func (cli *feeder) filesToParse() ([]string, error) {
 
 // Print logs text to the end user
 func (cli *feeder) Print(text string) {
-	log.Println(text)
+	info(text)
+}
+
+// Info logs text to the end user
+func (cli *feeder) Info(text string) {
+	info(text)
+}
+
+// Debug logs text to the end user
+func (cli *feeder) Debug(text string) {
+	debug(text)
+}
+
+// Warning logs text to the end user
+func (cli *feeder) Warning(text string) {
+	warn(text)
 }
 
 // Error prints and error to the user, exists if its a fatal error
 func (cli *feeder) Error(err error, fatal bool) {
-	txt := fmt.Sprintf("%#v", err)
-	log.Println(err)
+	// txt := fmt.Sprintf("%#v", err)
+	errorF(err.Error())
 	if fatal {
-		log.Fatal(txt)
-		return
+		os.Exit(1)
 	}
-	log.Println(txt)
 }

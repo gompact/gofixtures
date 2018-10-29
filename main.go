@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"os"
 
@@ -46,7 +47,7 @@ func main() {
 
 	dbConfParser, err := getParser(dbConfInput.Type)
 	if err != nil {
-		feeder.Print("failed to parse database configuration")
+		feeder.Error(errors.New("failed to parse database configuration"), false)
 		feeder.Error(err, true)
 	}
 	dbConf, err := dbConfParser.ParseDBConf(dbConfInput.Data)
@@ -62,23 +63,27 @@ func main() {
 	default:
 		feeder.Error(errors.New("unsupported database driver"), true)
 	}
-	feeder.Print("attempting to connect to datastore...")
+	feeder.Debug("attempting to connect to datastore...")
 	err = datastore.Connect()
 	if err != nil {
+		feeder.Error(errors.New("failed to connection to datastore"), false)
 		feeder.Error(err, true)
 	}
 	defer datastore.Close()
-	feeder.Print("Connection to datastore has been established")
+	feeder.Info("Connection to datastore has been established")
 
 	// get the data that needs to be parsed
-	feeder.Print("loading fixture files...")
+	feeder.Info("loading fixture files...")
 	input, err := feeder.GetInput()
 	if err != nil {
 		feeder.Error(err, true)
 	}
 
 	// based on type of the data, determine which parser is going to be used
+	numberOfInputs := 0
+	successfulInputs := 0
 	for _, i := range input {
+		numberOfInputs++
 		p, err := getParser(i.Type)
 		if err != nil {
 			feeder.Error(err, true)
@@ -86,7 +91,7 @@ func main() {
 		// parse the input
 		fixture, err := p.Parse(i.Data)
 		if err != nil {
-			feeder.Print("Failed to parse input, proceeding to next input")
+			feeder.Warning("Failed to parse input, proceeding to next input")
 			feeder.Error(err, false)
 			continue
 		}
@@ -99,11 +104,12 @@ func main() {
 		}
 		err = datastore.Insert(fixture)
 		if err != nil {
-			feeder.Print("Failed to insert to datastore, " + err.Error())
+			feeder.Error(errors.New("Failed to insert to datastore, "), false)
+			feeder.Error(err, false)
 			continue
 		}
+		successfulInputs++
 	}
 
-	// fmt.Println("Finished Parsing all the inputs...")
-	feeder.Print("Finished Parsing all the inputs...")
+	feeder.Info(fmt.Sprintf("Successfully inserted %d out of %d\n", successfulInputs, numberOfInputs))
 }
