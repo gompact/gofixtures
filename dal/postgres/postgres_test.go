@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/schehata/gofixtures/entity"
+	"github.com/ishehata/gofixtures/v3/entity"
 )
 
 func prepareTestData(numberOfRecords int) entity.Fixture {

@@ -5,8 +5,8 @@ import (
 	"log"
 	"strings"
 
-	"github.com/schehata/gofixtures/dal"
-	"github.com/schehata/gofixtures/entity"
+	"github.com/ishehata/gofixtures/v3/dal"
+	"github.com/ishehata/gofixtures/v3/entity"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq" // postgresql driver
 )

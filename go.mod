@@ -1,4 +1,4 @@
-module github.com/schehata/gofixtures
+module github.com/schehata/gofixtures/v3
 
 require (
 	github.com/jmoiron/sqlx v1.2.0

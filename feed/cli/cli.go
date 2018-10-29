@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/schehata/gofixtures/entity"
+	"github.com/ishehata/gofixtures/v3/entity"
 )
 
 // CLI implements Feeder interface

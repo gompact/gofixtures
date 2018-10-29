@@ -6,18 +6,18 @@ import (
 	"log"
 	"os"
 
-	"github.com/schehata/gofixtures/dal"
-	"github.com/schehata/gofixtures/dal/postgres"
-	"github.com/schehata/gofixtures/feed/cli"
-	"github.com/schehata/gofixtures/parser"
-	"github.com/schehata/gofixtures/parser/csv"
-	"github.com/schehata/gofixtures/parser/json"
-	"github.com/schehata/gofixtures/parser/yaml"
+	"github.com/ishehata/gofixtures/v3/dal"
+	"github.com/ishehata/gofixtures/v3/dal/postgres"
+	"github.com/ishehata/gofixtures/v3/feed/cli"
+	"github.com/ishehata/gofixtures/v3/parser"
+	"github.com/ishehata/gofixtures/v3/parser/csv"
+	"github.com/ishehata/gofixtures/v3/parser/json"
+	"github.com/ishehata/gofixtures/v3/parser/yaml"
 )
 
 var queries []string
 
-const version = "2.0.0"
+const version = "3.0.0"
 
 func getParser(forType string) (parser.Parser, error) {
 	switch forType {

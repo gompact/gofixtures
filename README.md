@@ -1,6 +1,6 @@
 # gofixtures
 
-version: 2.2.0
+version: 3.0.0
 
 [![Build Status](https://travis-ci.org/schehata/gofixtures.svg)](https://travis-ci.org/schehata/gofixtures)
 
@@ -29,22 +29,26 @@ through CLI, and supports PostgreSQL only.
 This will install gofixtures to your $GOPATH/bin
 
 ```bash
-$ go get github.com/emostafa/gofixtures
-$ go install github.com/emostafa/gofixtures
+$ go get github.com/ishehata/gofixtures/v3
+$ go install github.com/ishehata/gofixtures/v3
 ```
 
 #### Usage
 
-To start using gofixtures you need to have a configuration file for the database connection, It could be written
-in YAML or JSON, here is an example for `db.yaml`
+To start using gofixtures you need to have a configuration file, that includes information
+on which db driver should it use, and what are the credentials
+It could be written
+in YAML or JSON, here is an example for `.gofixtures.yaml` which will be automatically loaded
+by gofixtures:
 
 ```yaml
-driver: "postgres"
-database: "mydb"
-user: "foo"
-password: "bar"
-host: "localhost"
-auto_create_tables: false
+db:
+  driver: "postgres"
+  database: "mydb"
+  user: "foo"
+  password: "bar"
+  host: "localhost"
+  auto_create_tables: false
 ```
 
 The next step is to prepare your fixtures:
@@ -69,18 +73,18 @@ records:
 5. in order to use gofixtures, change directory to one level above where the yaml file exists, run command
 
 ```bash
-$ gofixtures --file fixtures/example.yaml --dbconf db.yaml
+$ gofixtures -file fixtures/example.yaml
 ```
 
 
-6. by default, gofixtures expecte yaml files to exists in "fixtures/" directory, but you can override this by either:
+6. by default, gofixtures expects yaml files to exists in "fixtures/" directory, but you can override this by either:
 	a. specify a file to load, e.g: `$ gofixtures -file myfixture.json`
 	b. specify a directory and loal all the fixtures files inside it, e.g: `$ gofixtures -directory /home/foo/myfixtures`
 
 A combination of all the available flags can be used, e.g:
 
 ```bash
-$ gofixtures --dbconf mydbconf.yaml --dir ./my_fixtures 
+$ gofixtures -config myconf.yaml -dir ./my_fixtures 
 ```
 
 
