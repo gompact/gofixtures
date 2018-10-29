@@ -57,8 +57,11 @@ that we are going to insert data into, and then a list of records, as following:
 table: countries
 records:
   - name: Egypt
+  - capital: Cairo
   - name: Germany
+    capital: Berlin
   - name: Netherlands
+    capital: Amsterdam
 ```
 
 3. the previous yaml file inserts three records into table `countries`
