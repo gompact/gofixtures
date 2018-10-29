@@ -40,26 +40,26 @@ func main() {
 	}
 	// read input using CLI
 	feeder := cli.New()
-	dbConfInput, err := feeder.GetDBConf()
+	confInput, err := feeder.ReadConfig()
 	if err != nil {
 		feeder.Error(err, true)
 	}
 
-	dbConfParser, err := getParser(dbConfInput.Type)
+	confParser, err := getParser(confInput.Type)
 	if err != nil {
 		feeder.Error(errors.New("failed to parse database configuration"), false)
 		feeder.Error(err, true)
 	}
-	dbConf, err := dbConfParser.ParseDBConf(dbConfInput.Data)
+	conf, err := confParser.ParseConfig(confInput.Data)
 	if err != nil {
 		feeder.Error(err, true)
 	}
 
 	// connect to database
 	var datastore dal.Datastore
-	switch dbConf.Driver {
+	switch conf.DB.Driver {
 	case "postgres":
-		datastore = postgres.New(dbConf)
+		datastore = postgres.New(conf.DB)
 	default:
 		feeder.Error(errors.New("unsupported database driver"), true)
 	}
@@ -111,5 +111,5 @@ func main() {
 		successfulInputs++
 	}
 
-	feeder.Info(fmt.Sprintf("Successfully inserted %d out of %d\n", successfulInputs, numberOfInputs))
+	feeder.Success(fmt.Sprintf("Successfully inserted %d out of %d\n", successfulInputs, numberOfInputs))
 }

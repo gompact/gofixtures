@@ -10,15 +10,14 @@ import (
 	"strings"
 
 	"github.com/ishehata/gofixtures/entity"
-	"github.com/ishehata/gofixtures/feed"
 )
 
-type feeder struct {
+// CLI implements Feeder interface
+type CLI struct {
 	filename   string
-	dbConfFile string
+	configFile string
 	directory  string
 	currentDir string
-	AutoTables bool
 }
 
 func init() {
@@ -26,44 +25,41 @@ func init() {
 }
 
 // New creates a new instace of the CLI feeder
-func New() feed.Feeder {
-	feeder := &feeder{}
+func New() *CLI {
+	feeder := &CLI{}
 	feeder.readCommandLineFlags()
 	feeder.currentDir, _ = filepath.Abs("./")
 	return feeder
 }
 
 const defaultFixturesDirectory = "fixtures"
-const defaultDBConfigFile = "db/dbconf.yaml"
+const defaultConfigFile = ".gofixtures.yaml"
 
 // readCommandLineFlags reads the options supplied in the comamnd line
-func (cli *feeder) readCommandLineFlags() {
+func (cli *CLI) readCommandLineFlags() {
 	flag.StringVar(&cli.directory, "dir", defaultFixturesDirectory, "The path of the fixtures directory")
 	flag.StringVar(&cli.filename, "file", "", "The path of a fixture file to load")
-	flag.StringVar(&cli.dbConfFile, "dbconf", defaultDBConfigFile, "The path of dbconf file to load database configuration")
-	flag.BoolVar(&cli.AutoTables, "autoTables", false, "Automatically create tables if they doesn't exists, false by default")
+	flag.StringVar(&cli.configFile, "config", defaultConfigFile, "The path of config file to load configurations from")
 
 	flag.Parse()
 }
 
-// DatabaseConf generate the db configuration string. Make sure
-// to call ReadCommandLineFlags() first, Because DatabaseConf()
-// checks first if command line arguments has been passed
-// if not it looks for dbconf.yaml in ./db folder.
-func (cli *feeder) GetDBConf() (entity.DBConfigInput, error) {
+// ReadConfig reades the configurations file. Make sure
+// to call ReadCommandLineFlags() first.
+func (cli *CLI) ReadConfig() (entity.ConfigInput, error) {
 	// determine the file type, e.g: yaml or json
-	ext := filepath.Ext(cli.dbConfFile)
+	ext := filepath.Ext(cli.configFile)
 
-	input := entity.DBConfigInput{
+	input := entity.ConfigInput{
 		Type: ext,
 	}
 
-	cli.Print("reading database configuration file...")
-	f, err := os.Open(cli.dbConfFile)
+	cli.Info("reading configuration file...")
+	f, err := os.Open(cli.configFile)
 	if err != nil {
 		return input, err
 	}
-	cli.Print("database configuration file has been loaded successfully")
+	cli.Success("configuration file has been loaded successfully")
 
 	input.Data = f
 
@@ -82,7 +78,7 @@ func extractFilename(filePath string) string {
 
 // GetInput reads the files selected by the user
 // and return them as inputs
-func (cli *feeder) GetInput() ([]entity.Input, error) {
+func (cli *CLI) GetInput() ([]entity.Input, error) {
 	var inputs []entity.Input
 	// get list of files that will be parsed
 	files, err := cli.filesToParse()
@@ -112,7 +108,7 @@ func (cli *feeder) GetInput() ([]entity.Input, error) {
 // Check if a directory is passed, Else, Expect to find a dir named "fixtures" to load
 // files form.
 // Returns a list of string of filenames
-func (cli *feeder) filesToParse() ([]string, error) {
+func (cli *CLI) filesToParse() ([]string, error) {
 	files := []string{}
 	if cli.filename != "" {
 		filename := path.Join(cli.currentDir, cli.filename)
@@ -134,27 +130,32 @@ func (cli *feeder) filesToParse() ([]string, error) {
 }
 
 // Print logs text to the end user
-func (cli *feeder) Print(text string) {
+func (cli *CLI) Print(text string) {
 	info(text)
 }
 
 // Info logs text to the end user
-func (cli *feeder) Info(text string) {
+func (cli *CLI) Info(text string) {
 	info(text)
 }
 
 // Debug logs text to the end user
-func (cli *feeder) Debug(text string) {
+func (cli *CLI) Debug(text string) {
 	debug(text)
 }
 
 // Warning logs text to the end user
-func (cli *feeder) Warning(text string) {
+func (cli *CLI) Warning(text string) {
 	warn(text)
 }
 
+// Success logs text to the end user
+func (cli *CLI) Success(text string) {
+	success(text)
+}
+
 // Error prints and error to the user, exists if its a fatal error
-func (cli *feeder) Error(err error, fatal bool) {
+func (cli *CLI) Error(err error, fatal bool) {
 	// txt := fmt.Sprintf("%#v", err)
 	errorF(err.Error())
 	if fatal {

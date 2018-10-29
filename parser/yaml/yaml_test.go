@@ -7,27 +7,33 @@ import (
 
 func TestDBConfParsing(t *testing.T) {
 	parser := New()
-	data := "driver: postgres\nhost: localhost\ndatabase: postgres\nuser: user\npassword: 123\n"
+	data := `
+	db:
+		driver: postgres
+		host: localhost
+		database: postgres
+		user: user
+		password: 123`
 	b := bytes.NewBufferString(data)
-	dbConf, err := parser.ParseDBConf(b)
+	conf, err := parser.ParseConfig(b)
 	if err != nil {
 		t.Error(err)
 		t.Fail()
 	}
 
-	if dbConf.Host != "localhost" {
-		t.Errorf("host was not parsed correctly, expected %s, got %s", "localhost", dbConf.Host)
+	if conf.DB.Host != "localhost" {
+		t.Errorf("host was not parsed correctly, expected %s, got %s", "localhost", conf.DB.Host)
 	}
-	if dbConf.Driver != "postgres" {
-		t.Errorf("driver was not parsed correctly, expected %s, got %s", "postgres", dbConf.Host)
+	if conf.DB.Driver != "postgres" {
+		t.Errorf("driver was not parsed correctly, expected %s, got %s", "postgres", conf.DB.Host)
 	}
-	if dbConf.Database != "postgres" {
-		t.Errorf("database was not parsed correctly, expected %s, got %s", "postgres", dbConf.Host)
+	if conf.DB.Database != "postgres" {
+		t.Errorf("database was not parsed correctly, expected %s, got %s", "postgres", conf.DB.Host)
 	}
-	if dbConf.User != "user" {
-		t.Errorf("user was not parsed correctly, expected %s, got %s", "user", dbConf.Host)
+	if conf.DB.User != "user" {
+		t.Errorf("user was not parsed correctly, expected %s, got %s", "user", conf.DB.Host)
 	}
-	if dbConf.Password != "123" {
-		t.Errorf("password was not parsed correctly, expected %s, got %s", "123", dbConf.Host)
+	if conf.DB.Password != "123" {
+		t.Errorf("password was not parsed correctly, expected %s, got %s", "123", conf.DB.Host)
 	}
 }
