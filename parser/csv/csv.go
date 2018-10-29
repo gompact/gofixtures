@@ -10,21 +10,21 @@ import (
 )
 
 // New creates a new instance of CSV parser
-func New() *CSVParser {
-	return &CSVParser{}
+func New() *Parser {
+	return &Parser{}
 }
 
-// CSVParser parses csv files and return a DBConf or Fixture data
-type CSVParser struct {
+// Parser parses csv files and return a DBConf or Fixture data
+type Parser struct {
 }
 
-// ParseDBConf parses db configurations from a JSON input
-func (parser *CSVParser) ParseDBConf(input io.Reader) (entity.DBConfig, error) {
-	return entity.DBConfig{}, errors.New("Reading Database configurations from a csv file is not supported")
+// ParseConfig parses db configurations from a JSON input
+func (parser *Parser) ParseConfig(input io.Reader) (entity.Config, error) {
+	return entity.Config{}, errors.New("Reading Database configurations from a csv file is not supported")
 }
 
 // Parse parses list of items written in JSON
-func (parser *CSVParser) Parse(input io.Reader) (entity.Fixture, error) {
+func (parser *Parser) Parse(input io.Reader) (entity.Fixture, error) {
 	fixture := entity.Fixture{}
 	r := csv.NewReader(input)
 	records, err := r.ReadAll()

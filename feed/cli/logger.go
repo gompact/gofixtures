@@ -3,14 +3,6 @@ package cli
 import (
 	"fmt"
 	"log"
-	"os"
-)
-
-var (
-	infoLogger  = log.New(os.Stdout, "", log.Ldate|log.Ltime)
-	debugLogger = log.New(os.Stdout, "[DEBUG]: ", log.Ldate|log.Ltime)
-	warnLogger  = log.New(os.Stdout, "[WARNING]: ", log.Ldate|log.Ltime)
-	errorLogger = log.New(os.Stdout, "[ERROR]: ", log.Ldate|log.Ltime)
 )
 
 const (
@@ -42,6 +34,11 @@ func warn(text string) {
 func debug(text string) {
 	text = "[DEBUG]: " + text
 	log.Println(colorString(text, Magenta))
+}
+
+func success(text string) {
+	text = "[INFO]: " + text
+	log.Println(colorString(text, Green))
 }
 
 func errorF(text string) {
