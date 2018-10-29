@@ -44,6 +44,7 @@ database: "mydb"
 user: "foo"
 password: "bar"
 host: "localhost"
+auto_create_tables: false
 ```
 
 The next step is to prepare your fixtures:
@@ -62,7 +63,7 @@ records:
 
 3. the previous yaml file inserts three records into table `countries`
 4. gofixtures will parse each record and insert it into the database
-5. in order to use gofixutres, change directory to one level above where the yaml file exists, run command
+5. in order to use gofixtures, change directory to one level above where the yaml file exists, run command
 
 ```bash
 $ gofixtures --file fixtures/example.yaml --dbconf db.yaml
@@ -80,11 +81,13 @@ $ gofixtures --dbconf mydbconf.yaml --dir ./my_fixtures
 ```
 
 
-#### Notes
+#### Notes on CSV Support
 
-- For CSV files, column names are read from the first row, filename will be used as a tablename
+- Column names are read from the first row
+- Filename will be used as a tablename
+- For now only comma ',' is allowed as a separator, will work on providing CLI flags to change that as needed
 
-##### Avialable Command Line Flags
+#### Avialable Command Line Flags
 
 1. dbconf "database configuration YAML (or JSON) file"
 3. file "a yaml or json file to load"
