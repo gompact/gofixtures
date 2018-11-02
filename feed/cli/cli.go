@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/ishehata/gofixtures/v3/entity"
+	"github.com/ishehata/gofixtures/v3/logger"
 )
 
 // CLI implements Feeder interface
@@ -18,10 +19,6 @@ type CLI struct {
 	configFile string
 	directory  string
 	currentDir string
-}
-
-func init() {
-	// log.SetFlags(log.Lshortfile | log.LstdFlags)
 }
 
 // New creates a new instace of the CLI feeder
@@ -54,12 +51,12 @@ func (cli *CLI) ReadConfig() (entity.ConfigInput, error) {
 		Type: ext,
 	}
 
-	cli.Info("reading configuration file...")
+	logger.Info("reading configuration file...")
 	f, err := os.Open(cli.configFile)
 	if err != nil {
 		return input, err
 	}
-	cli.Success("configuration file has been loaded successfully")
+	logger.Success("configuration file has been loaded successfully")
 
 	input.Data = f
 
@@ -86,9 +83,9 @@ func (cli *CLI) GetInput() ([]entity.Input, error) {
 		return inputs, err
 	}
 	inputs = make([]entity.Input, len(files))
-	cli.Print(fmt.Sprintf("found %d fixture files", len(files)))
+	logger.Info(fmt.Sprintf("found %d fixture files", len(files)))
 	for i, file := range files {
-		cli.Print(fmt.Sprintf("reading fixture: %s", file))
+		logger.Info(fmt.Sprintf("reading fixture: %s", file))
 		f, err := os.Open(file)
 		if err != nil {
 			return inputs, err
@@ -127,38 +124,4 @@ func (cli *CLI) filesToParse() ([]string, error) {
 		}
 	}
 	return files, nil
-}
-
-// Print logs text to the end user
-func (cli *CLI) Print(text string) {
-	info(text)
-}
-
-// Info logs text to the end user
-func (cli *CLI) Info(text string) {
-	info(text)
-}
-
-// Debug logs text to the end user
-func (cli *CLI) Debug(text string) {
-	debug(text)
-}
-
-// Warning logs text to the end user
-func (cli *CLI) Warning(text string) {
-	warn(text)
-}
-
-// Success logs text to the end user
-func (cli *CLI) Success(text string) {
-	success(text)
-}
-
-// Error prints and error to the user, exists if its a fatal error
-func (cli *CLI) Error(err error, fatal bool) {
-	// txt := fmt.Sprintf("%#v", err)
-	errorF(err.Error())
-	if fatal {
-		os.Exit(1)
-	}
 }

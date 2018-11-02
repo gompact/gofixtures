@@ -30,8 +30,9 @@ func (parser *Parser) ParseConfig(input io.Reader) (entity.Config, error) {
 func (parser *Parser) Parse(input io.Reader) (entity.Fixture, error) {
 	fixture := entity.Fixture{}
 	r := csv.NewReader(input)
-	if parser.config.Separator != "" {
-		r.Comma = parser.config.Separator
+	// check that its not an empty rune
+	if parser.config.Delimiter != rune(-1) {
+		r.Comma = parser.config.Delimiter
 	}
 	records, err := r.ReadAll()
 	if err != nil {

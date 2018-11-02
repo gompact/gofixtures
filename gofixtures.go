@@ -1,0 +1,88 @@
+package gofixtures
+
+import (
+	"errors"
+
+	"github.com/ishehata/gofixtures/v3/dal"
+	"github.com/ishehata/gofixtures/v3/dal/postgres"
+	"github.com/ishehata/gofixtures/v3/entity"
+	"github.com/ishehata/gofixtures/v3/logger"
+	"github.com/ishehata/gofixtures/v3/parser"
+)
+
+// GoFixtures struct holds the configuration and the datastore collection
+// also includes the methods needed to connect to perform operations
+// with the fixtures
+type GoFixtures struct {
+	version   string
+	Config    entity.Config
+	datastore dal.Datastore
+}
+
+// New creates a new instance of GoFixtures and connect to datastore
+// based on the passed configuration
+func New(config entity.Config) (*GoFixtures, error) {
+	// connect to database
+	var datastore dal.Datastore
+	switch config.DB.Driver {
+	case "postgres":
+		datastore = postgres.New(config.DB)
+	default:
+		logger.Error("unsupported database driver")
+		return nil, errors.New("unsupported database driver")
+	}
+	logger.Debug("attempting to connect to datastore...")
+	err := datastore.Connect()
+	if err != nil {
+		logger.Error("failed to connection to datastore")
+		logger.Error(err.Error())
+		return nil, err
+	}
+
+	return &GoFixtures{
+		version:   "3.0.0",
+		Config:    config,
+		datastore: datastore,
+	}, nil
+}
+
+// Load inserts fixtures into the database after deserializing the data
+func (lib *GoFixtures) Load(inputs []entity.Input) error {
+	for _, input := range inputs {
+		go func(lib *GoFixtures, input entity.Input) {
+			p, err := parser.New(input.Type, lib.Config)
+			if err != nil {
+				logger.Error(err.Error())
+				return
+			}
+			fixture, err := p.Parse(input.Data)
+			if err != nil {
+				logger.Error(err.Error())
+				return
+			}
+			// TODO: maybe find a better approach to pass the filename to all
+			// parsers and they can use/or not the filename.
+
+			// Special case for the csv, set the table name from the file name
+			if input.Type == ".csv" {
+				fixture.Table = input.Filename
+			}
+			err = lib.datastore.Insert(fixture)
+			if err != nil {
+				logger.Error(err.Error())
+				return
+			}
+		}(lib, input)
+	}
+	return nil
+}
+
+// Clear clears all the database tables
+func (lib *GoFixtures) Clear() error {
+	return nil
+}
+
+// Version returns the current version of gofixtures
+func (lib *GoFixtures) Version() string {
+	return lib.version
+}
