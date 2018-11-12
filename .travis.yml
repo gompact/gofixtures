@@ -3,6 +3,7 @@ dist: trusty
 language: go
 go:
   - "1.11"
+
 services:
       - postgresql
 

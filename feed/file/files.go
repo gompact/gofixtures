@@ -26,9 +26,9 @@ func New() *Feeder {
 	return &Feeder{}
 }
 
-func (feeder *Feeder) Read() ([]entity.Input, error) {
+func (feeder *Feeder) Read(files []string) ([]entity.Input, error) {
 	inputs := make([]entity.Input, len(feeder.Config.Files))
-	for i, file := range feeder.Config.Files {
+	for i, file := range files {
 		logger.Info(fmt.Sprintf("reading fixture: %s", file))
 		f, err := os.Open(file)
 		if err != nil {

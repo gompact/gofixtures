@@ -7,8 +7,6 @@ import (
 // Feeder interface defines methods needs to be implemented
 // by differnet interfaces that could act as the input for gofixtures
 type Feeder interface {
-	// ReadConfig reads the database configuration
-	ReadConfig() (entity.ConfigInput, error)
 	// GetInput retrieves the list of fixutres that should be loaded
 	// into the datastore
 	GetInput() ([]entity.Input, error)

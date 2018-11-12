@@ -15,16 +15,6 @@ func New() *Parser {
 type Parser struct {
 }
 
-// ParseConfig parses db configurations from a JSON input
-func (parser *Parser) ParseConfig(input io.Reader) (entity.Config, error) {
-	var data entity.Config
-	err := json.NewDecoder(input).Decode(&data)
-	if err != nil {
-		return data, err
-	}
-	return data, nil
-}
-
 // Parse parses list of items written in JSON
 func (parser *Parser) Parse(input io.Reader) (entity.Fixture, error) {
 	fixture := entity.Fixture{}

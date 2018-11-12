@@ -39,7 +39,7 @@ func TestGoFixtures(t *testing.T) {
 	data, err := json.Marshal(fakeModel)
 	buf := bytes.NewReader(data)
 	input := entity.Input{
-		Type: "json",
+		Type: ".json",
 		Data: buf,
 	}
 	err = gf.Load([]entity.Input{input})

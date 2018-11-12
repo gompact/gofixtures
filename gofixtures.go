@@ -3,6 +3,8 @@ package gofixtures
 import (
 	"errors"
 
+	"github.com/ishehata/gofixtures/feed/file"
+
 	"github.com/ishehata/gofixtures/v3/dal"
 	"github.com/ishehata/gofixtures/v3/dal/postgres"
 	"github.com/ishehata/gofixtures/v3/entity"
@@ -75,6 +77,16 @@ func (lib *GoFixtures) Load(inputs []entity.Input) error {
 		}(lib, input)
 	}
 	return nil
+}
+
+// LoadFromFiles parses a list of files and insert their to given datastore
+func (lib *GoFixtures) LoadFromFiles(files []string) error {
+	feeder := file.New()
+	inputs, err := feeder.Read(files)
+	if err != nil {
+		return err
+	}
+	return lib.Load(inputs)
 }
 
 // Clear clears all the database tables

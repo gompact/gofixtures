@@ -9,9 +9,7 @@ import (
 
 	"github.com/ishehata/gofixtures/entity"
 	"github.com/ishehata/gofixtures/logger"
-	"github.com/ishehata/gofixtures/parser"
-	gofixtures "github.com/ishehata/gofixtures/v3"
-	"github.com/ishehata/gofixtures/v3/feed/cli"
+	"github.com/ishehata/gofixtures/v3"
 )
 
 var queries []string
@@ -35,25 +33,13 @@ func main() {
 	default:
 		log.Fatal("You must supply a command")
 	}
+	// read yaml config
+	conf, err := ReadConfig(".gofixtures.yml")
+	if err != nil {
+		logger.Error(err.Error())
+		os.Exit(1)
+	}
 	// read input using CLI
-	feeder := cli.New()
-	confInput, err := feeder.ReadConfig()
-	if err != nil {
-		logger.Error(err.Error())
-		os.Exit(1)
-	}
-
-	confParser, err := parser.New(confInput.Type, entity.Config{})
-	if err != nil {
-		logger.Error("failed to parse configuration")
-		logger.Error(err.Error())
-		os.Exit(1)
-	}
-	conf, err := confParser.ParseConfig(confInput.Data)
-	if err != nil {
-		logger.Error(err.Error())
-		os.Exit(1)
-	}
 	gf, err = gofixtures.New(conf)
 	if err != nil {
 		logger.Error(err.Error())
@@ -68,11 +54,16 @@ func main() {
 				log.Fatal(err)
 			}
 		}
-		_, err := filesToParse(workingPath)
+		files, err := filesToParse(workingPath)
 		if err != nil {
-			log.Fatal(err)
+			logger.Error(err.Error())
+			os.Exit(1)
 		}
-		// gf.Load()
+		err = gf.LoadFromFiles(files)
+		if err != nil {
+			logger.Error(err.Error())
+			os.Exit(1)
+		}
 	} else if cmdArgs[1] == "clear" {
 		gf.Clear()
 	}
@@ -81,7 +72,7 @@ func main() {
 }
 
 // FilesToParse checks if there is a filename is passed in the command line, If not,
-// Check if a directory is passed, Else, Expect to find a dir named "fixtures" to load
+// Check if a directory is passed, else, Expect to find a dir named "fixtures" to load
 // files form.
 // Returns a list of string of filenames
 func filesToParse(givenPath string) ([]string, error) {
