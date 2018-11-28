@@ -3,13 +3,11 @@ package gofixtures
 import (
 	"errors"
 
-	"github.com/ishehata/gofixtures/dal/fake"
-	"github.com/ishehata/gofixtures/feed/file"
-
 	"github.com/ishehata/gofixtures/v3/dal"
 	"github.com/ishehata/gofixtures/v3/dal/fake"
 	"github.com/ishehata/gofixtures/v3/dal/postgres"
 	"github.com/ishehata/gofixtures/v3/entity"
+	"github.com/ishehata/gofixtures/v3/feed/file"
 	"github.com/ishehata/gofixtures/v3/logger"
 	"github.com/ishehata/gofixtures/v3/parser"
 )
