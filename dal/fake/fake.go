@@ -8,26 +8,29 @@ import (
 	"github.com/ishehata/gofixtures/v3/entity"
 )
 
-// New Creates
-func New(config entity.DBConfig) *FakeDatastore {
-	return &FakeDatastore{}
+// New Creates an instance of Fake Datastore
+func New(config entity.DBConfig) *Datastore {
+	return &Datastore{
+		config: config,
+	}
 }
 
-// FakeDatastore resembles a fake db which just prints SQL statements
-type FakeDatastore struct {
+// Datastore resembles a fake db which just prints SQL statements
+type Datastore struct {
+	config entity.DBConfig
 }
 
 // Connect connects to postgresql db based on parameters of DBConfig object
-func (datastore *FakeDatastore) Connect() error {
+func (datastore *Datastore) Connect() error {
 	return nil
 }
 
-func (datastore *postgresDatastore) createTable(tableName string, columns []string) error {
+func (datastore *Datastore) createTable(tableName string, columns []string) error {
 	columnsDef := strings.Join(columns, " VARCHAR, ")
 	columnsDef += " VARCHAR"
 	q := fmt.Sprintf("CREATE TABLE IF NOT EXISTS public.%s (%s)", tableName, columnsDef)
 	fmt.Println(q)
-	return err
+	return nil
 }
 
 func keys(m map[string]interface{}) []string {
@@ -40,7 +43,7 @@ func keys(m map[string]interface{}) []string {
 	return keys
 }
 
-func (datastore *postgresDatastore) Insert(fixture entity.Fixture) error {
+func (datastore *Datastore) Insert(fixture entity.Fixture) error {
 	if datastore.config.AutoCreateTables {
 		columnsList := keys(fixture.Records[0])
 		if err := datastore.createTable(fixture.Table, columnsList); err != nil {
@@ -54,7 +57,7 @@ func (datastore *postgresDatastore) Insert(fixture entity.Fixture) error {
 	return nil
 }
 
-func (datastore *postgresDatastore) Close() {
+func (datastore *Datastore) Close() {
 }
 
 func buildConnectionString(conf entity.DBConfig) string {
