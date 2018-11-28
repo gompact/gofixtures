@@ -8,22 +8,6 @@ A small command line tool written in Go lang, that loads fixtures
 and insert it's records to a database. Currently supports YAML, CSV & JSON files
 through CLI, and supports PostgreSQL only as a datastore.
 
-#### Supported File Types
-
-- [X] JSON
-- [X] YAML
-- [X] CSV
-
-#### Supported Databases
-
-- [X] PostgreSQL
-- [ ] MySQL
-- [ ] SQLServer 
-- [ ] MongoDB
-- [ ] Redis
-- [ ] Cassandra
-- [ ] Firebase
-
 #### Install
 
 This will install gofixtures to your $GOPATH/bin
@@ -106,24 +90,8 @@ A combination of all the available flags can be used, e.g:
 $ gofixtures -config myconf.yaml -dir ./my_fixtures 
 ```
 
-
-#### Notes on CSV Support
-
-- Column names are read from the first row
-- Filename will be used as a tablename
-- For now only comma ',' is allowed as a separator, will work on providing CLI flags to change that as needed
-
 #### Avialable Command Line Flags
 
 1. dbconf "database configuration YAML (or JSON) file"
 3. file "a yaml or json file to load"
 4. dir "a directory contains fixtures"
-
-
-
-#### TODO
-
-1. ~~support JSON files~~
-2. support different sql databases like MySQL
-3. ~~load multiple yaml fiels, or load folders~~
-4. ~~ability to load configuration from file instead of kwargs~~

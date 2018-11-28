@@ -95,7 +95,7 @@ func (lib *GoFixtures) LoadFromFiles(files []string) error {
 
 // Clear clears all the database tables
 func (lib *GoFixtures) Clear() error {
-	return nil
+	return errors.New("NotImplemented")
 }
 
 // Version returns the current version of gofixtures
