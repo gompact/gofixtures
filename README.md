@@ -16,13 +16,14 @@ through CLI, and supports PostgreSQL only.
 
 #### Supported Databases
 
-- [X] PostgreSQL
+- [x] PostgreSQL
 - [ ] MySQL
 - [ ] SQLServer 
 - [ ] MongoDB
 - [ ] Redis
 - [ ] Cassandra
 - [ ] Firebase
+- [x] FakeDatabase
 
 #### Install
 
