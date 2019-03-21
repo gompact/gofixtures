@@ -7,5 +7,6 @@ import "github.com/ishehata/gofixtures/v3/entity"
 type Datastore interface {
 	Connect() error
 	Insert(fixture entity.Fixture) error
+	Clear() error
 	Close()
 }

@@ -39,17 +39,22 @@ func TestGoFixtures(t *testing.T) {
 	data, err := json.Marshal(fakeModel)
 	buf := bytes.NewReader(data)
 	input := entity.Input{
-		Type: ".json",
-		Data: buf,
+		Filename: "test.json",
+		Type:     ".json",
+		Data:     buf,
 	}
 	err = gf.Load([]entity.Input{input})
 	if err != nil {
 		t.Error(err)
 		t.Fail()
 	}
+	// TODO: check that db has the data
+
 	err = gf.Clear()
 	if err != nil {
 		t.Error(err)
 		t.Fail()
 	}
+
+	// TODO: check table has 0 rows
 }

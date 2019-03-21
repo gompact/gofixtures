@@ -57,6 +57,10 @@ func (datastore *Datastore) Insert(fixture entity.Fixture) error {
 	return nil
 }
 
+func (datastore *Datastore) Clear() error {
+	return nil
+}
+
 func (datastore *Datastore) Close() {
 }
 
