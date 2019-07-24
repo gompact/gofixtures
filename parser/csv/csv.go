@@ -6,7 +6,7 @@ import (
 
 	"encoding/csv"
 
-	"github.com/ishehata/gofixtures/entity"
+	"github.com/schehata/gofixtures/entity"
 )
 
 // New creates a new instance of CSV parser

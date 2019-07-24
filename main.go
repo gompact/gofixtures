@@ -6,13 +6,13 @@ import (
 	"log"
 	"os"
 
-	"github.com/ishehata/gofixtures/dal"
-	"github.com/ishehata/gofixtures/dal/postgres"
-	"github.com/ishehata/gofixtures/feed/cli"
-	"github.com/ishehata/gofixtures/parser"
-	"github.com/ishehata/gofixtures/parser/csv"
-	"github.com/ishehata/gofixtures/parser/json"
-	"github.com/ishehata/gofixtures/parser/yaml"
+	"github.com/schehata/gofixtures/dal"
+	"github.com/schehata/gofixtures/dal/postgres"
+	"github.com/schehata/gofixtures/feed/cli"
+	"github.com/schehata/gofixtures/parser"
+	"github.com/schehata/gofixtures/parser/csv"
+	"github.com/schehata/gofixtures/parser/json"
+	"github.com/schehata/gofixtures/parser/yaml"
 )
 
 var queries []string

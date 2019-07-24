@@ -1,7 +1,7 @@
 package feed
 
 import (
-	"github.com/ishehata/gofixtures/entity"
+	"github.com/schehata/gofixtures/entity"
 )
 
 // Feeder interface defines methods needs to be implemented

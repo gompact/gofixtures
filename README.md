@@ -2,7 +2,7 @@
 
 version: 2.2.0
 
-[![Build Status](https://travis-ci.org/ishehata/gofixtures.svg)](https://travis-ci.org/ishehata/gofixtures)
+[![Build Status](https://travis-ci.org/schehata/gofixtures.svg)](https://travis-ci.org/schehata/gofixtures)
 
 A small command line tool written in Go lang, that loads fixtures
 and insert it's records to a database. Currently supports YAML and JSON files

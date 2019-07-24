@@ -9,8 +9,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/ishehata/gofixtures/entity"
-	"github.com/ishehata/gofixtures/feed"
+	"github.com/schehata/gofixtures/entity"
+	"github.com/schehata/gofixtures/feed"
 )
 
 type feeder struct {
