@@ -16,7 +16,7 @@ services:
             GOFIXTURES_TEST_DB_PASSWORD: gofixtures
             GOFIXTURES_TEST_DB_PORT: 5432
         volumes:
-            - ".:/go/src/github.com/ishehata/gofixtures"
+            - ".:/go/src/github.com/schehata/gofixtures"
         depends_on:
             - postgres
 
