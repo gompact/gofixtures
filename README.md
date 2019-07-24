@@ -30,7 +30,7 @@ through CLI, and supports PostgreSQL only.
 This will install gofixtures to your $GOPATH/bin
 
 ```bash
-$ go get github.com/ishehata/gofixtures/v3
+$ go get github.com/schehata/gofixtures/v3
 ```
 
 #### Usage
@@ -43,8 +43,8 @@ by gofixtures:
 
 ```go
 import (
-    "github.com/ishehata/gofixutres"
-    "github.com/ishehata/gofixutres/entity"
+    "github.com/schehata/gofixutres"
+    "github.com/schehata/gofixutres/entity"
 )
 
 func main() {

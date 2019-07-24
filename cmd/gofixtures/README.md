@@ -2,7 +2,7 @@
 
 version: 3.0.0
 
-[![Build Status](https://travis-ci.org/ishehata/gofixtures.svg)](https://travis-ci.org/ishehata/gofixtures)
+[![Build Status](https://travis-ci.org/schehata/gofixtures.svg)](https://travis-ci.org/schehata/gofixtures)
 
 A small command line tool written in Go lang, that loads fixtures
 and insert it's records to a database. Currently supports YAML, CSV & JSON files
@@ -13,8 +13,8 @@ through CLI, and supports PostgreSQL only as a datastore.
 This will install gofixtures to your $GOPATH/bin
 
 ```bash
-$ go get github.com/ishehata/gofixtures/v3/cmd/gofixtures
-$ go install github.com/ishehata/gofixtures/v3/cmd/gofixtures
+$ go get github.com/schehata/gofixtures/v3/cmd/gofixtures
+$ go install github.com/schehata/gofixtures/v3/cmd/gofixtures
 ```
 
 #### Usage
