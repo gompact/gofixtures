@@ -7,9 +7,9 @@ import (
 	"os"
 	"path"
 
-	"github.com/schehata/gofixtures/entity"
-	"github.com/schehata/gofixtures/logger"
 	"github.com/schehata/gofixtures/v3"
+	"github.com/schehata/gofixtures/v3/entity"
+	"github.com/schehata/gofixtures/v3/logger"
 )
 
 var queries []string

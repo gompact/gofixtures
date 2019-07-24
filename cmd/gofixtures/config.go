@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	"github.com/schehata/gofixtures/entity"
-	"github.com/schehata/gofixtures/logger"
+	"github.com/schehata/gofixtures/v3/entity"
+	"github.com/schehata/gofixtures/v3/logger"
 	yaml "gopkg.in/yaml.v2"
 )
 
