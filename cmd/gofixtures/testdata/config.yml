@@ -1,0 +1,6 @@
+db:
+  driver: postgres
+  database: test
+  user: test
+  password: test
+

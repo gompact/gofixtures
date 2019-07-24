@@ -5,10 +5,10 @@ import (
 	"log"
 	"strings"
 
-	"github.com/schehata/gofixtures/v3/dal"
-	"github.com/schehata/gofixtures/v3/entity"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq" // postgresql driver
+	"github.com/schehata/gofixtures/v3/dal"
+	"github.com/schehata/gofixtures/v3/entity"
 )
 
 // New Creates

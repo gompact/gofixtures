@@ -12,11 +12,13 @@ import (
 	"github.com/schehata/gofixtures/v3/parser"
 )
 
+
+const VERSION = "3.0.0"
+
 // GoFixtures struct holds the configuration and the datastore collection
 // also includes the methods needed to connect to perform operations
 // with the fixtures
 type GoFixtures struct {
-	version   string
 	Config    entity.Config
 	datastore dal.Datastore
 }
@@ -44,7 +46,6 @@ func New(config entity.Config) (*GoFixtures, error) {
 	}
 
 	return &GoFixtures{
-		version:   "3.0.0",
 		Config:    config,
 		datastore: datastore,
 	}, nil
@@ -98,5 +99,5 @@ func (lib *GoFixtures) Clear() error {
 
 // Version returns the current version of gofixtures
 func (lib *GoFixtures) Version() string {
-	return lib.version
+	return VERSION
 }
