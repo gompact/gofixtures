@@ -3,13 +3,13 @@ package gofixtures
 import (
 	"errors"
 
-	"github.com/ishehata/gofixtures/v3/dal"
-	"github.com/ishehata/gofixtures/v3/dal/fake"
-	"github.com/ishehata/gofixtures/v3/dal/postgres"
-	"github.com/ishehata/gofixtures/v3/entity"
-	"github.com/ishehata/gofixtures/v3/feed/file"
-	"github.com/ishehata/gofixtures/v3/logger"
-	"github.com/ishehata/gofixtures/v3/parser"
+	"github.com/schehata/gofixtures/v3/dal"
+	"github.com/schehata/gofixtures/v3/dal/fake"
+	"github.com/schehata/gofixtures/v3/dal/postgres"
+	"github.com/schehata/gofixtures/v3/entity"
+	"github.com/schehata/gofixtures/v3/feed/file"
+	"github.com/schehata/gofixtures/v3/logger"
+	"github.com/schehata/gofixtures/v3/parser"
 )
 
 // GoFixtures struct holds the configuration and the datastore collection

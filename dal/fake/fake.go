@@ -5,7 +5,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/ishehata/gofixtures/v3/entity"
+	"github.com/schehata/gofixtures/v3/entity"
 )
 
 // New Creates an instance of Fake Datastore

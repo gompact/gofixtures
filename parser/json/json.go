@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"io"
 
-	"github.com/ishehata/gofixtures/v3/entity"
+	"github.com/schehata/gofixtures/v3/entity"
 )
 
 // New creates a new instance of JSON parser

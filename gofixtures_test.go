@@ -6,7 +6,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/ishehata/gofixtures/v3/entity"
+	"github.com/schehata/gofixtures/v3/entity"
 )
 
 func getConfig() entity.Config {

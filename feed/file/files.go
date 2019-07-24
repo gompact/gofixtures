@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/ishehata/gofixtures/entity"
-	"github.com/ishehata/gofixtures/logger"
+	"github.com/schehata/gofixtures/entity"
+	"github.com/schehata/gofixtures/logger"
 )
 
 // Feeder is a file reader that implements Feeder interface

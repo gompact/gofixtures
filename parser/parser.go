@@ -4,10 +4,10 @@ import (
 	"errors"
 	"io"
 
-	"github.com/ishehata/gofixtures/v3/entity"
-	"github.com/ishehata/gofixtures/v3/parser/csv"
-	"github.com/ishehata/gofixtures/v3/parser/json"
-	"github.com/ishehata/gofixtures/v3/parser/yaml"
+	"github.com/schehata/gofixtures/v3/entity"
+	"github.com/schehata/gofixtures/v3/parser/csv"
+	"github.com/schehata/gofixtures/v3/parser/json"
+	"github.com/schehata/gofixtures/v3/parser/yaml"
 )
 
 // Parser interface defines the methods needs to be implemented by parsers

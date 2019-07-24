@@ -3,7 +3,7 @@ package yaml
 import (
 	"io"
 
-	"github.com/ishehata/gofixtures/v3/entity"
+	"github.com/schehata/gofixtures/v3/entity"
 	yaml "gopkg.in/yaml.v2"
 )
 
