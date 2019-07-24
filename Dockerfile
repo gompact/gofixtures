@@ -2,7 +2,7 @@ FROM golang
 
 RUN apt-get update && apt-get install -y netcat
 
-WORKDIR /go/src/github.com/ishehata/gofixtures
+WORKDIR /go/src/github.com/schehata/gofixtures
 
 COPY go.mod go.sum ./
 
