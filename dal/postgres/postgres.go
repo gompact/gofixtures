@@ -49,7 +49,7 @@ func (datastore *postgresDatastore) listTables() ([]string, error) {
 	    AND table_type='BASE TABLE';
     `
 
-	tables := []string{}
+	var tables []string
 	err := datastore.db.Select(&tables, q)
 
 	return tables, err
@@ -142,7 +142,7 @@ func buildNamedQuery(table string, record map[string]interface{}) string {
 }
 
 func getColumns(record map[string]interface{}) []string {
-	cols := []string{}
+	var cols []string
 	for key := range record {
 		cols = append(cols, key)
 	}

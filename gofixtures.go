@@ -4,7 +4,6 @@ import (
 	"errors"
 
 	"github.com/schehata/gofixtures/v3/dal"
-	"github.com/schehata/gofixtures/v3/dal/fake"
 	"github.com/schehata/gofixtures/v3/dal/postgres"
 	"github.com/schehata/gofixtures/v3/entity"
 	"github.com/schehata/gofixtures/v3/feed/file"
@@ -31,8 +30,6 @@ func New(config entity.Config) (*GoFixtures, error) {
 	switch config.DB.Driver {
 	case "postgres":
 		datastore = postgres.New(config.DB)
-	case "fake":
-		datastore = fake.New(config.DB)
 	default:
 		logger.Error("unsupported database driver")
 		return nil, errors.New("unsupported database driver")

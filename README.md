@@ -23,7 +23,6 @@ through CLI, and supports PostgreSQL only.
 - [ ] Redis
 - [ ] Cassandra
 - [ ] Firebase
-- [x] FakeDatabase
 
 #### Install
 
@@ -50,7 +49,7 @@ import (
 func main() {
     config := entity.Config {
       entity.DBConfig{
-        Driver: "fake"
+        Driver: "postgres"
       }
     }
     gf, err := gofixutres.New(config)

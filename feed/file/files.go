@@ -17,7 +17,6 @@ type Feeder struct {
 
 // Config holds the configuration information for the file feeder
 type Config struct {
-	Files      []string
 	CurrentDir string
 }
 
@@ -26,8 +25,9 @@ func New() *Feeder {
 	return &Feeder{}
 }
 
+// Read converts data files into Fixture consumable data
 func (feeder *Feeder) Read(files []string) ([]entity.Input, error) {
-	inputs := make([]entity.Input, len(feeder.Config.Files))
+	inputs := make([]entity.Input, len(files))
 	for i, file := range files {
 		logger.Info(fmt.Sprintf("reading fixture: %s", file))
 		f, err := os.Open(file)

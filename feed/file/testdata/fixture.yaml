@@ -1,0 +1,8 @@
+table: countries
+records:
+  - name: Egypt
+  - capital: Cairo
+  - name: Germany
+    capital: Berlin
+  - name: Netherlands
+    capital: Amsterdam

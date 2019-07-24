@@ -5,9 +5,9 @@ import (
 )
 
 // Feeder interface defines methods needs to be implemented
-// by differnet interfaces that could act as the input for gofixtures
+// by different interfaces that could act as the input for gofixtures
 type Feeder interface {
-	// GetInput retrieves the list of fixutres that should be loaded
+	// GetInput retrieves the list of fixtures that should be loaded
 	// into the datastore
 	GetInput() ([]entity.Input, error)
 	// Print sends/prints something to the end user
