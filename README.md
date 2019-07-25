@@ -42,8 +42,8 @@ by gofixtures:
 
 ```go
 import (
-    "github.com/schehata/gofixutres"
-    "github.com/schehata/gofixutres/entity"
+    "github.com/schehata/gofixutres/v3"
+    "github.com/schehata/gofixutres/v3/entity"
 )
 
 func main() {

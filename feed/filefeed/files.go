@@ -1,7 +1,8 @@
-package file
+package filefeed
 
 import (
 	"fmt"
+	"github.com/schehata/gofixtures/v3/feed"
 	"os"
 	"path/filepath"
 	"strings"
@@ -10,8 +11,8 @@ import (
 	"github.com/schehata/gofixtures/v3/logger"
 )
 
-// Feeder is a file reader that implements Feeder interface
-type Feeder struct {
+// FileFeed is a file reader that implements FileFeed interface
+type FileFeed struct {
 	Config Config
 }
 
@@ -21,12 +22,12 @@ type Config struct {
 }
 
 // New returns a new instance of the file feeder
-func New() *Feeder {
-	return &Feeder{}
+func New() feed.Feeder {
+	return &FileFeed{}
 }
 
 // Read converts data files into Fixture consumable data
-func (feeder *Feeder) Read(files []string) ([]entity.Input, error) {
+func (feeder *FileFeed) Read(files []string) ([]entity.Input, error) {
 	inputs := make([]entity.Input, len(files))
 	for i, file := range files {
 		logger.Info(fmt.Sprintf("reading fixture: %s", file))

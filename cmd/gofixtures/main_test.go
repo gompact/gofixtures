@@ -32,6 +32,18 @@ func TestFilesToParse(t *testing.T) {
 		t.Error("Wrong number of files to parse")
 		t.Fail()
 	}
+
+	// pass a file instead of a directory
+	files, err = filesToParse("testdata/config.yml")
+	if err != nil {
+		t.Error(err.Error())
+		t.Fail()
+	}
+
+	if len(files) != 1 {
+		t.Error("Failed to pass a certain file to filesToParse")
+		t.Fail()
+	}
 }
 
 func TestHandleCommandLineArguments(t *testing.T) {

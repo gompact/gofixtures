@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"path"
 
@@ -17,6 +16,7 @@ const (
 	PrintVersion = 1
 	load         = 2
 	clear        = 3
+	defaultWorkingPath = "./fixtures"
 )
 
 func main() {
@@ -26,7 +26,7 @@ func main() {
 		fmt.Printf("GoFixtures version is: %s\n", gofixtures.VERSION)
 		os.Exit(1)
 	} else if cmd == 0 {
-		log.Fatal("You must supply a command")
+		logger.Error("You must supply a command")
 	}
 	// read yaml config
 	conf, err := ReadConfig(".gofixtures.yml")
@@ -42,11 +42,11 @@ func main() {
 	}
 
 	if cmdArgs[1] == "load" {
-		var workingPath = "./fixtures"
+		var workingPath = defaultWorkingPath
 		if v := cmdArgs[2]; v != "" {
 			workingPath = v
 			if err != nil {
-				log.Fatal(err)
+				logger.Error(err.Error())
 			}
 		}
 		files, err := filesToParse(workingPath)
@@ -83,15 +83,22 @@ func handleCommandLineArguments(cmdArgs []string) int {
 }
 
 // FilesToParse checks if there is a filename is passed in the command line, If not,
-// Check if a directory is passed, else, Expect to find a dir named "fixtures" to load
-// files form.
+// Check if a directory is passed or a file
 // Returns a list of string of filenames
 func filesToParse(givenPath string) ([]string, error) {
 	var files []string
-	// TOFIX: get current dir
-	currentDir := ""
+	currentDir, err := os.Getwd()
+	if err != nil {
+		return files, err
+	}
 	p := path.Join(currentDir, givenPath)
-	// TOFIX: check if this path is a file or a directory
+	f, err := os.Stat(p)
+	if err != nil {
+		return files, err
+	}
+	if !f.IsDir() {
+		return []string{p}, nil
+	}
 	fileInfos, err := ioutil.ReadDir(p)
 	if err != nil {
 		return files, err

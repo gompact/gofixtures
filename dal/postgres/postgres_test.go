@@ -43,7 +43,7 @@ func TestInsertion(t *testing.T) {
 		t.Error(err)
 		t.Fail()
 	}
-	// Clear table first
+	// truncate table first
 	err = dataStore.Clear()
 	if err != nil {
 		t.Error(err)
@@ -56,7 +56,7 @@ func TestInsertion(t *testing.T) {
 	}
 
 	var products []product
-	err = dataStore.db.Get(&products,"SELECT * FROM products")
+	err = dataStore.db.Select(&products,"SELECT * FROM products")
 	if err != nil {
 		t.Error(err)
 		t.Fail()

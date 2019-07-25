@@ -6,7 +6,7 @@ import (
 	"github.com/schehata/gofixtures/v3/dal"
 	"github.com/schehata/gofixtures/v3/dal/postgres"
 	"github.com/schehata/gofixtures/v3/entity"
-	"github.com/schehata/gofixtures/v3/feed/file"
+	"github.com/schehata/gofixtures/v3/feed/filefeed"
 	"github.com/schehata/gofixtures/v3/logger"
 	"github.com/schehata/gofixtures/v3/parser"
 )
@@ -81,7 +81,7 @@ func (lib *GoFixtures) Load(inputs []entity.Input) error {
 
 // LoadFromFiles parses a list of files and insert their to given datastore
 func (lib *GoFixtures) LoadFromFiles(files []string) error {
-	feeder := file.New()
+	feeder := filefeed.New()
 	inputs, err := feeder.Read(files)
 	if err != nil {
 		return err
