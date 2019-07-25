@@ -34,14 +34,7 @@ func TestInsertion(t *testing.T) {
 	const numOfRecords = 100
 	fixture := prepareTestData(numOfRecords)
 
-	dbConfig := entity.DBConfig{
-		Driver:           "postgres",
-		Database:         os.Getenv("GOFIXTURES_TEST_DB_NAME"),
-		User:             os.Getenv("GOFIXTURES_TEST_DB_USER"),
-		Password:         os.Getenv("GOFIXTURES_TEST_DB_PASSWORD"),
-		Host:             os.Getenv("GOFIXTURES_TEST_DB_HOST"),
-		AutoCreateTables: true,
-	}
+	dbConfig := getDBConfig()
 	dataStore := postgresDatastore{
 		config: dbConfig,
 	}
@@ -104,14 +97,7 @@ func BenchmarkInsertion(b *testing.B) {
 func TestClear(t *testing.T) {
 	fixture := prepareTestData(100)
 
-	dbConfig := entity.DBConfig{
-		Driver:           "postgres",
-		Database:         os.Getenv("GOFIXTURES_TEST_DB_NAME"),
-		User:             os.Getenv("GOFIXTURES_TEST_DB_USER"),
-		Password:         os.Getenv("GOFIXTURES_TEST_DB_PASSWORD"),
-		Host:             os.Getenv("GOFIXTURES_TEST_DB_HOST"),
-		AutoCreateTables: true,
-	}
+	dbConfig := getDBConfig()
 	datastore := postgresDatastore{
 		config: dbConfig,
 	}
@@ -126,7 +112,7 @@ func TestClear(t *testing.T) {
 
 	datastore.Clear()
 	var products []product
-	err = datastore.db.Select(&products,"SELECT * FROM products")
+	err = datastore.db.Select(&products, "SELECT * FROM products")
 	if err != nil {
 		t.Error(err.Error())
 		t.Fatal(err)
@@ -134,4 +120,16 @@ func TestClear(t *testing.T) {
 	if len(products) != 0 {
 		t.Fatal("Clear should delete all rows from tables")
 	}
+}
+
+func getDBConfig() entity.DBConfig {
+	dbConfig := entity.DBConfig{
+		Driver:           "postgres",
+		Database:         os.Getenv("GOFIXTURES_TEST_DB_NAME"),
+		User:             os.Getenv("GOFIXTURES_TEST_DB_USER"),
+		Password:         os.Getenv("GOFIXTURES_TEST_DB_PASSWORD"),
+		Host:             os.Getenv("GOFIXTURES_TEST_DB_HOST"),
+		AutoCreateTables: true,
+	}
+	return dbConfig
 }
