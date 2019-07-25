@@ -39,6 +39,7 @@ func (datastore *postgresDatastore) createTable(tableName string, columns []stri
 	columnsDef := strings.Join(columns, " VARCHAR, ")
 	columnsDef += " VARCHAR"
 	q := fmt.Sprintf("CREATE TABLE IF NOT EXISTS public.%s (%s)", tableName, columnsDef)
+	log.Println(q)
 	_, err := datastore.db.Exec(q)
 	return err
 }
@@ -83,6 +84,7 @@ func (datastore *postgresDatastore) Insert(fixture entity.Fixture) error {
 		columnsList := keys(fixture.Records[0])
 		if err := datastore.createTable(fixture.Table, columnsList); err != nil {
 			log.Fatal(err)
+			return err
 		}
 	}
 	for _, record := range fixture.Records {
