@@ -2,13 +2,12 @@ package postgres
 
 import (
 	"fmt"
-	"log"
 	"strings"
 
-	"github.com/schehata/gofixtures/dal"
-	"github.com/schehata/gofixtures/entity"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq" // postgresql driver
+	"github.com/schehata/gofixtures/v3/dal"
+	"github.com/schehata/gofixtures/v3/entity"
 )
 
 // New Creates
@@ -43,6 +42,24 @@ func (datastore *postgresDatastore) createTable(tableName string, columns []stri
 	return err
 }
 
+func (datastore *postgresDatastore) listTables() ([]string, error) {
+	q := `SELECT table_name FROM information_schema.tables
+	WHERE table_schema='public'
+	    AND table_type='BASE TABLE';
+    `
+
+	var tables []string
+	err := datastore.db.Select(&tables, q)
+
+	return tables, err
+}
+
+func (datastore *postgresDatastore) truncateTable(name string) error {
+	q := fmt.Sprintf("TRUNCATE TABLE %s", name)
+	_, err := datastore.db.Exec(q)
+	return err
+}
+
 func keys(m map[string]interface{}) []string {
 	keys := make([]string, len(m))
 	i := 0
@@ -54,6 +71,9 @@ func keys(m map[string]interface{}) []string {
 }
 
 func (datastore *postgresDatastore) Insert(fixture entity.Fixture) error {
+	if len(fixture.Records) == 0 {
+		return nil
+	}
 	tx, err := datastore.db.Begin()
 	if err != nil {
 		return err
@@ -61,7 +81,7 @@ func (datastore *postgresDatastore) Insert(fixture entity.Fixture) error {
 	if datastore.config.AutoCreateTables {
 		columnsList := keys(fixture.Records[0])
 		if err := datastore.createTable(fixture.Table, columnsList); err != nil {
-			log.Fatal(err)
+			return err
 		}
 	}
 	for _, record := range fixture.Records {
@@ -76,6 +96,22 @@ func (datastore *postgresDatastore) Insert(fixture entity.Fixture) error {
 		tx.Rollback()
 		return err
 	}
+	return nil
+}
+
+func (datastore *postgresDatastore) Clear() error {
+	tables, err := datastore.listTables()
+	if err != nil {
+		return err
+	}
+
+	for _, table := range tables {
+		err = datastore.truncateTable(table)
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -105,7 +141,7 @@ func buildNamedQuery(table string, record map[string]interface{}) string {
 }
 
 func getColumns(record map[string]interface{}) []string {
-	cols := []string{}
+	var cols []string
 	for key := range record {
 		cols = append(cols, key)
 	}

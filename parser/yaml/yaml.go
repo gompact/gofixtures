@@ -3,34 +3,23 @@ package yaml
 import (
 	"io"
 
-	"github.com/schehata/gofixtures/entity"
-	"github.com/schehata/gofixtures/parser"
-	y "gopkg.in/yaml.v2"
+	"github.com/schehata/gofixtures/v3/entity"
+	yaml "gopkg.in/yaml.v2"
 )
 
 // New creates a new instance of YAML parser
-func New() parser.Parser {
-	return &yaml{}
+func New() *Parser {
+	return &Parser{}
 }
 
-type yaml struct {
-}
-
-// ParseDBConf parses db configurations from a YAML input
-func (parser *yaml) ParseDBConf(input io.Reader) (entity.DBConfig, error) {
-	var data entity.DBConfig
-	err := y.NewDecoder(input).Decode(&data)
-	if err != nil {
-		return data, err
-	}
-	return data, nil
+type Parser struct {
 }
 
 // Parse parses list of items written in YAML
-func (parser *yaml) Parse(input io.Reader) (entity.Fixture, error) {
+func (parser *Parser) Parse(input io.Reader) (entity.Fixture, error) {
 	fixture := entity.Fixture{}
 
-	err := y.NewDecoder(input).Decode(&fixture)
+	err := yaml.NewDecoder(input).Decode(&fixture)
 	if err != nil {
 		return fixture, err
 	}

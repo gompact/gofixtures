@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+    postgres:
+        image: postgres:alpine
+        environment:
+            POSTGRES_PASSWORD: gofixtures
+        ports:
+            - "5432:5432"
+    testing:
+        build: .
+        environment:
+            GOFIXTURES_TEST_DB_NAME: postgres
+            GOFIXTURES_TEST_DB_USER: postgres
+            GOFIXTURES_TEST_DB_HOST: postgres
+            GOFIXTURES_TEST_DB_PASSWORD: gofixtures
+            GOFIXTURES_TEST_DB_PORT: 5432
+        volumes:
+            - ".:/go/src/github.com/schehata/gofixtures"
+        depends_on:
+            - postgres
+

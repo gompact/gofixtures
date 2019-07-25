@@ -1,16 +1,8 @@
-package cli
+package logger
 
 import (
 	"fmt"
 	"log"
-	"os"
-)
-
-var (
-	infoLogger  = log.New(os.Stdout, "", log.Ldate|log.Ltime)
-	debugLogger = log.New(os.Stdout, "[DEBUG]: ", log.Ldate|log.Ltime)
-	warnLogger  = log.New(os.Stdout, "[WARNING]: ", log.Ldate|log.Ltime)
-	errorLogger = log.New(os.Stdout, "[ERROR]: ", log.Ldate|log.Ltime)
 )
 
 const (
@@ -29,22 +21,27 @@ func colorString(text string, color int) string {
 	return fmt.Sprintf("\033[%dm%s\033[m", int(color), text)
 }
 
-func info(text string) {
+func Info(text string) {
 	text = "[INFO]: " + text
 	log.Println(colorString(text, Cyan))
 }
 
-func warn(text string) {
+func Warn(text string) {
 	text = "[WARNING]: " + text
 	log.Println(colorString(text, Yellow))
 }
 
-func debug(text string) {
+func Debug(text string) {
 	text = "[DEBUG]: " + text
 	log.Println(colorString(text, Magenta))
 }
 
-func errorF(text string) {
+func Success(text string) {
+	text = "[INFO]: " + text
+	log.Println(colorString(text, Green))
+}
+
+func Error(text string) {
 	text = "[ERROR]: " + text
 	log.Println(colorString(text, Red))
 }

@@ -1,32 +1,33 @@
 package csv
 
 import (
-	"errors"
 	"io"
 
 	"encoding/csv"
 
-	"github.com/schehata/gofixtures/entity"
+	"github.com/schehata/gofixtures/v3/entity"
 )
 
 // New creates a new instance of CSV parser
-func New() *CSVParser {
-	return &CSVParser{}
+func New(config entity.CSVConfig) *Parser {
+	return &Parser{
+		config: config,
+	}
 }
 
-// CSVParser parses csv files and return a DBConf or Fixture data
-type CSVParser struct {
-}
-
-// ParseDBConf parses db configurations from a JSON input
-func (parser *CSVParser) ParseDBConf(input io.Reader) (entity.DBConfig, error) {
-	return entity.DBConfig{}, errors.New("Reading Database configurations from a csv file is not supported")
+// Parser parses csv files and return a DBConf or Fixture data
+type Parser struct {
+	config entity.CSVConfig
 }
 
 // Parse parses list of items written in JSON
-func (parser *CSVParser) Parse(input io.Reader) (entity.Fixture, error) {
+func (parser *Parser) Parse(input io.Reader) (entity.Fixture, error) {
 	fixture := entity.Fixture{}
 	r := csv.NewReader(input)
+	// check that its not an empty rune
+	if parser.config.Delimiter != rune(-1) {
+		r.Comma = parser.config.Delimiter
+	}
 	records, err := r.ReadAll()
 	if err != nil {
 		return fixture, err
